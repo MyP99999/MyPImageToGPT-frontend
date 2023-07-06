@@ -1,10 +1,10 @@
 import React from 'react'
-import AnimalsForm from './components/AnimalsForm'
+import MainPage from './pages/MainPage'
 
 const App = () => {
   return (
     <div>
-      <AnimalsForm />
+      <MainPage />
     </div>
   )
 }

@@ -41,7 +41,7 @@
   flex-direction: column;
   width: 320px;
 }
-.main input[type="text"] {
+.main textarea[type="text"] {
   padding: 12px 16px;
   border: 1px solid #10a37f;
   border-radius: 4px;
