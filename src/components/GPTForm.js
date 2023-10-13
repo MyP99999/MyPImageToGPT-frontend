@@ -4,7 +4,7 @@ import dog from '../assets/dog.png';
 import { createWorker } from 'tesseract.js';
 
 const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
-    const [animalInput, setAnimalInput] = useState('');
+    const [input, setInput] = useState('');
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
@@ -20,7 +20,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
         const { data } = await worker.recognize(selectedImage);
         console.log(data)
         setTextResult(data.text);
-        setAnimalInput(textResult)
+        setInput(textResult)
         setIsLoading('')
     }, [selectedImage, textResult, setTextResult]);
 
@@ -32,16 +32,18 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
         event.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3500/api/generate', {
-                text: animalInput
+            // Make a GET request
+            const response = await axios.get('http://localhost:8080/bot/chat', {
+                params: {
+                    prompt: input,
+                    userId: 3
+                }
             });
-
-
-            if (response.status === 200) {
+                console.log(response)
                 const data = response.data;
-                setResult(data.result);
-            }
-            setAnimalInput('');
+                setResult(data);
+            console.log(result)
+            setInput('');
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -62,8 +64,8 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
                         type="text"
                         name="animal"
                         placeholder={isLoading}
-                        value={animalInput}
-                        onChange={(e) => setAnimalInput(e.target.value)}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
                         className="w-96 h-[500px] mb-4 p-2 border-2 border-gray-700 rounded-lg"
                     />
                     <button
