@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
 import dog from '../assets/dog.png';
 import { createWorker } from 'tesseract.js';
+import { useAuth } from '../context/useAuth';
 
 const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     const [input, setInput] = useState('');
@@ -9,6 +10,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
 
+    const { user } = useAuth()
 
     const convertImageToText = useCallback(async () => {
         if (!selectedImage) return
@@ -39,9 +41,9 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
                     userId: 3
                 }
             });
-                console.log(response)
-                const data = response.data;
-                setResult(data);
+            console.log(response)
+            const data = response.data;
+            setResult(data);
             console.log(result)
             setInput('');
             setLoading(false);
@@ -57,7 +59,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     return (
         <div className='flex flex-col xl:flex-row gap-24 items-center'>
             <main className="flex flex-col items-center">
-                <img src={dog} className="w-12 h-12 mb-2" alt="dog" />
+                <h1>{user?.sub}</h1>
                 <h3 className='text-2xl font-extrabold my-4'>Enter the questions or upload a photo</h3>
                 <form onSubmit={onSubmit} className="flex flex-col items-center">
                     <textarea
