@@ -34,6 +34,10 @@ const LoginPage = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  };
+
   return (
     <div className="min-h-screen bg-blue-700 flex flex-col justify-center">
       <div className="max-w-md w-full mx-auto rounded-md bg-white border-gray-300 ">
@@ -70,6 +74,12 @@ const LoginPage = () => {
               </div>
             </div>
           </form>
+          <button
+            onClick={handleGoogleLogin}
+            className="w-full py-2 px-4 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm mt-4"
+          >
+            Sign in with Google
+          </button>
         </div>
       </div>
     </div>

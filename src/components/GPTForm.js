@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
-import dog from '../assets/dog.png';
 import { createWorker } from 'tesseract.js';
 import { useAuth } from '../context/useAuth';
 
@@ -20,7 +19,6 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
         await worker.loadLanguage('ron');
         await worker.initialize('ron');
         const { data } = await worker.recognize(selectedImage);
-        console.log(data)
         setTextResult(data.text);
         setInput(textResult)
         setIsLoading('')
@@ -38,7 +36,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
             const response = await axios.get('http://localhost:8080/bot/chat', {
                 params: {
                     prompt: input,
-                    userId: 3
+                    userId: user.id,
                 }
             });
             console.log(response)
