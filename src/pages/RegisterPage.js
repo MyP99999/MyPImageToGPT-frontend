@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axiosInstance from '../api/axios'; // Import your custom axios instance
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -10,22 +11,16 @@ const RegisterPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, username, password }),
+      const response = await axiosInstance.post('/api/auth/register', {
+        username,
+        email,
+        password
       });
-      const data = await response.json();
-      if (response.ok) {
-        // Registration was successful
-        console.log('Registration successful', data);
+      if (response.status === 200 || response.status === 201) { // Check for successful response status
         navigate('/login'); // Redirect to login page after registration
       } else {
         // Handle errors, show messages to user
-        console.error('Registration failed', data.message);
-        alert(data.message || 'Failed to register');
+        console.error('Registration failed');
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -59,7 +54,7 @@ const RegisterPage = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded mt-1"
-                  required
+                  
                 />
               </div>
               <div>

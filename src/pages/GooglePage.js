@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { jwtDecode } from 'jwt-decode'; // Corrected import statement
+import axiosInstance from '../api/axios'; // Import your custom axios instance
 
 const GooglePage = () => {
     const location = useLocation();
@@ -11,30 +12,27 @@ const GooglePage = () => {
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const code = queryParams.get('code');
-        console.log("code:" + code)
+    
         if (code) {
-            // Send the code as a query parameter
-            fetch(`http://localhost:8080/api/auth/google?code=${encodeURIComponent(code)}`, {
-                method: 'POST',
+          axiosInstance.post(`/api/auth/google?code=${encodeURIComponent(code)}`)
+            .then(response => {
+              const data = response.data;
+              if (data.token) {
+                const user = jwtDecode(data.token); // Decode the JWT token
+                login(user, { accessToken: data.token, refreshToken: data.refreshToken });
+                navigate('/'); // Navigate to the home page or dashboard
+              } else {
+                navigate('/login'); // Navigate to login on failure
+              }
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.token) {
-                        const user = jwtDecode(data?.token); // Corrected usage
-                        login(user);
-                        navigate('/'); // Navigate to the home page or dashboard
-                    } else {
-                        navigate('/login'); // Navigate to login on failure
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    navigate('/login'); // Navigate to login on error
-                });
+            .catch(error => {
+              console.error('Error:', error);
+              navigate('/login'); // Navigate to login on error
+            });
         } else {
-            navigate('/login'); // Redirect to login if no code is present
+          navigate('/login'); // Redirect to login if no code is present
         }
-    }, [location, navigate, login]);
+      }, [location, navigate, login]);
 
     return <h1>asdasdasd</h1>;
 };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { jwtDecode } from 'jwt-decode'; // Corrected import statement
+import axiosInstance from '../api/axios'; // Import your custom axios instance
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -12,25 +13,18 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/api/auth/authenticate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await axiosInstance.post('/api/auth/authenticate', {
+        username,
+        password
       });
-      const data = await response.json();
-      if (response.ok) {
-        console.log(data);
-        const user = jwtDecode(data?.token); // Corrected usage
-        login(user);
-        navigate('/');
-      } else {
-        throw new Error(data.message || 'Error logging in');
-      }
+      const data = response.data;
+      const user = jwtDecode(data.token); // Decode JWT to get user data
+      login(user, { accessToken: data.token, refreshToken: data.refreshToken });
+      navigate('/');
     } catch (error) {
-      console.error('Login error:', error);
-      alert(error.message);
+      const errorMessage = error.response?.data?.message || 'Error logging in';
+      console.error('Login error:', errorMessage);
+      alert(errorMessage);
     }
   };
 
@@ -46,7 +40,7 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <div>
-                <label htmlFor="username" className="text-sm font-bold text-gray-600 block">Username</label>
+                <label htmlFor="username" className="text-sm font-bold text-gray-600 block">Email</label>
                 <input
                   type="text"
                   id="username"
