@@ -5,6 +5,7 @@ import Missing from './components/Missing';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import GooglePage from './pages/GooglePage';
+import ActivatePage from './pages/ActivatePage';
 import TokenPurchasePage from './pages/TokenPurchasePage';
 import { useAuth } from './context/useAuth';
 
@@ -29,6 +30,7 @@ const App = () => {
     <div>
       <Routes>
         <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+        <Route path='/activate' element={<ActivatePage />} />
         <Route path="/login/oauth2/code/google" element={<GooglePage />} />
         <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
         <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />

@@ -17,7 +17,7 @@ const RegisterPage = () => {
         password
       });
       if (response.status === 200 || response.status === 201) { // Check for successful response status
-        navigate('/login'); // Redirect to login page after registration
+        alert("You have received an email to activate the account!")
       } else {
         // Handle errors, show messages to user
         console.error('Registration failed');
