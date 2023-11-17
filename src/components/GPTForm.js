@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react'
 import { createWorker } from 'tesseract.js';
 import { useAuth } from '../context/useAuth';
+import axiosInstance from '../api/axios'; 
 
 const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     const [input, setInput] = useState('');
@@ -33,7 +33,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
         setLoading(true);
         try {
             // Make a GET request
-            const response = await axios.get('http://localhost:8080/bot/chat', {
+            const response = await axiosInstance.get('http://localhost:8080/bot/chat', {
                 params: {
                     prompt: input,
                     userId: user.id,
@@ -57,7 +57,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     return (
         <div className='flex flex-col xl:flex-row gap-24 items-center'>
             <main className="flex flex-col items-center">
-                <h1>{user?.sub}</h1>
+                <h1>{user?.tokens}</h1>
                 <h3 className='text-2xl font-extrabold my-4'>Enter the questions or upload a photo</h3>
                 <form onSubmit={onSubmit} className="flex flex-col items-center">
                     <textarea

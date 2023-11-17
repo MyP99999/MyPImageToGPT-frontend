@@ -15,7 +15,8 @@ export const AuthProvider = ({ children }) => {
       console.error('Error decoding the access token:', error);
       return null;
     }
-  });  const navigate = useNavigate();
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');

@@ -1,53 +1,52 @@
-// src/pages/TokenPurchasePage.js
-
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useAuth } from '../context/useAuth';
+import axiosInstance from '../api/axios'; // Import your custom axios instance
+import { redirect, useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
 const CheckoutForm = () => {
-    console.log(process.env.REACT_APP_STRIPE_PUBLIC_KEY)
     const stripe = useStripe();
     const elements = useElements();
     const [amount, setAmount] = useState('');
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const { user, setUser } = useAuth()
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
 
         try {
-            // Call your backend to create the PaymentIntent
-            const response = await fetch('http://localhost:8080/create-payment-intent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount: amount }) // Amount in cents
+            const response = await axiosInstance.post('/create-payment-intent', {
+                amount: amount,
+                userId: user?.id
             });
-            const clientSecret = await response.text(); // Get the client secret as text
 
-            // Confirm the payment with the card details
+            const { clientSecret, newToken } = response.data; // Destructure response data
+
             const result = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: { card: elements.getElement(CardElement) }
             });
-            console.log(result)
+
             if (result.error) {
-                // Handle errors here
                 setError(result.error.message);
             } else {
                 if (result.paymentIntent.status === 'succeeded') {
-                    console.log("success")
+                    localStorage.setItem('accessToken', newToken);
+                    setUser({ ...user });
+                    navigate("/");
                 }
             }
         } catch (error) {
-            // Handle errors here
             setError(error.message);
         }
 
         setLoading(false);
     };
-
 
     return (
         <div>
