@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../api/axios'; 
 
 const ActivatePage = () => {
     const [searchParams] = useSearchParams();
@@ -17,7 +17,7 @@ const ActivatePage = () => {
 
             try {
                 // Call the activation API using Axios with async/await
-                const response = await axios.get(`http://localhost:8080/api/auth/activate?token=${token}`);
+                const response = await axiosInstance.get(`http://localhost:8080/api/auth/activate?token=${token}`);
                 setMessage(response.data.message || 'Your account has been successfully activated.');
                 // Redirect after a delay
                 setTimeout(() => navigate('/login'), 3000);

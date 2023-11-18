@@ -11,6 +11,7 @@ import { useAuth } from './context/useAuth';
 
 const App = () => {
   const { user } = useAuth();
+  console.log(localStorage.getItem('accessToken'))
 
   const ProtectedRoute = ({ children }) => {
     if (!user) {

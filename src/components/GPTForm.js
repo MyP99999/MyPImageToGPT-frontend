@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { createWorker } from 'tesseract.js';
 import { useAuth } from '../context/useAuth';
-import axiosInstance from '../api/axios'; 
+import axiosInstance from '../api/axios';
 
 const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     const [input, setInput] = useState('');
@@ -9,7 +9,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
 
-    const { user } = useAuth()
+    const { user, refreshAccessToken } = useAuth()
 
     const convertImageToText = useCallback(async () => {
         if (!selectedImage) return
@@ -39,21 +39,28 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
                     userId: user.id,
                 }
             });
-            console.log(response)
-            const data = response.data;
+            const data = response.data.toString();
+            console.log('Data type:', typeof data, 'Data value:', data);
             setResult(data);
-            console.log(result)
             setInput('');
             setLoading(false);
+            const refreshToken = localStorage.getItem('refreshToken');
+            // console.log(refreshToken)
+            await refreshAccessToken(refreshToken)
         } catch (error) {
             console.error(error);
             alert(error.message);
         }
     }
 
+
     const renderResultWithLineBreaks = () => {
-        return { __html: result.replace(/\n/g, '<br>') };
+        if (typeof result === 'string') {
+            return { __html: result.replace(/\n/g, '<br>') };
+        }
+        return { __html: '' }; // Return an empty string or some default value if result is not a string
     };
+
     return (
         <div className='flex flex-col xl:flex-row gap-24 items-center'>
             <main className="flex flex-col items-center">

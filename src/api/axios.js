@@ -1,24 +1,27 @@
 import axios from 'axios';
+import { isTokenExpired, refreshAccessToken } from '../context/useAuth'; // Correct path
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // Your backend base URL
+  baseURL: 'http://localhost:8080', // Backend base URL
 });
 
 axiosInstance.interceptors.response.use(
   response => response,
   async error => {
+    console.log("first")
     const originalRequest = error.config;
+    console.log(error)
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      console.log("asdasdas")
       const refreshToken = localStorage.getItem('refreshToken');
-      // Call your refresh token function here
-      const newAccessToken = await refreshAccessToken(refreshToken);
-      if (newAccessToken) {
-        console.log("asdasd123as")
-
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
-        return axiosInstance(originalRequest);
+      // Check if the refreshToken is available and not expired
+      if (refreshToken && !isTokenExpired(refreshToken)) {
+        const newAccessToken = await refreshAccessToken(refreshToken);
+        if (newAccessToken) {
+          axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          return axiosInstance(originalRequest);
+        }
       }
     }
     return Promise.reject(error);
@@ -26,17 +29,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-async function refreshAccessToken(refreshToken) {
-    try {
-      const response = await axios.post('http://localhost:8080/api/auth/refresh-token', { refreshToken });
-      const { accessToken } = response.data;
-      localStorage.setItem('accessToken', accessToken);
-      console.log(localStorage.getItem('accessToken'))
-      return accessToken;
-    } catch (error) {
-      console.error('Error refreshing access token:', error);
-      // Redirect to login or handle error
-    }
-  }
-  
