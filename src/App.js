@@ -8,38 +8,42 @@ import GooglePage from './pages/GooglePage';
 import ActivatePage from './pages/ActivatePage';
 import TokenPurchasePage from './pages/TokenPurchasePage';
 import { useAuth } from './context/useAuth';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const { user } = useAuth();
-  console.log(localStorage.getItem('accessToken'))
 
   const ProtectedRoute = ({ children }) => {
     if (!user) {
       return <Navigate to="/login" replace />;
     }
-    return children;
-  };
+    return (
+      <>
+        <Navbar />
+        {children}
+      </>
+  )};
 
-  const RedirectIfLoggedIn = ({ children }) => {
-    if (user) {
-      return <Navigate to="/" replace />;
-    }
-    return children;
-  };
+const RedirectIfLoggedIn = ({ children }) => {
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
-  return (
-    <div>
-      <Routes>
-        <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
-        <Route path='/activate' element={<ActivatePage />} />
-        <Route path="/login/oauth2/code/google" element={<GooglePage />} />
-        <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
-        <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />
-        <Route path='/checkout' element={<ProtectedRoute><TokenPurchasePage /></ProtectedRoute>} />
-        <Route path="*" element={<Missing />} />
-      </Routes>
-    </div>
-  );
+return (
+  <div className='bg-gray-300'>
+    <Routes>
+      <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+      <Route path='/activate' element={<ActivatePage />} />
+      <Route path="/login/oauth2/code/google" element={<GooglePage />} />
+      <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
+      <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />
+      <Route path='/checkout' element={<ProtectedRoute><TokenPurchasePage /></ProtectedRoute>} />
+      <Route path="*" element={<Missing />} />
+    </Routes>
+  </div>
+);
 }
 
 export default App;

@@ -64,7 +64,6 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
     return (
         <div className='flex flex-col xl:flex-row gap-24 items-center'>
             <main className="flex flex-col items-center">
-                <h1>{user?.tokens}</h1>
                 <h3 className='text-2xl font-extrabold my-4'>Enter the questions or upload a photo</h3>
                 <form onSubmit={onSubmit} className="flex flex-col items-center">
                     <textarea
