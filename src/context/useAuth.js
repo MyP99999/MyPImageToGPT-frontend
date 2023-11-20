@@ -18,7 +18,6 @@ export async function refreshAccessToken(refreshToken) {
     const response = await axiosInstance.post(
       'http://localhost:8080/api/auth/refresh-token?refreshToken=' + refreshToken
     );
-    console.log("asdadsdas")
     const { token } = response.data;
     localStorage.setItem('accessToken', token);
     return token;
@@ -49,13 +48,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkToken = async () => {
+      console.log("csaascS")
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
 
       if (accessToken && !isTokenExpired(accessToken)) {
         setUser(jwtDecode(accessToken));
-      } 
-      if (refreshToken && !isTokenExpired(refreshToken)) {
         try {
           const newAccessToken = await refreshAccessToken(refreshToken);
           if (newAccessToken) {
@@ -67,13 +65,26 @@ export const AuthProvider = ({ children }) => {
           console.error('Error while refreshing token:', error);
           logout();
         }
-      } else if (user){
+      }
+      else if (refreshToken && !isTokenExpired(refreshToken)) {
+        try {
+          const newAccessToken = await refreshAccessToken(refreshToken);
+          if (newAccessToken) {
+            setUser(jwtDecode(newAccessToken));
+          } else {
+            logout();
+          }
+        } catch (error) {
+          console.error('Error while refreshing token:', error);
+          logout();
+        }
+      } else if (user) {
         logout();
       }
     };
 
     checkToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const login = (userData, tokens) => {
@@ -87,7 +98,6 @@ export const AuthProvider = ({ children }) => {
       const response = await axiosInstance.post(
         'http://localhost:8080/api/auth/refresh-token?refreshToken=' + refreshToken
       );
-      console.log("asdadsdas")
       const { token } = response.data;
       localStorage.setItem('accessToken', token);
       const userData = jwtDecode(token);

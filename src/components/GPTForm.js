@@ -2,14 +2,19 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { createWorker } from 'tesseract.js';
 import { useAuth } from '../context/useAuth';
 import axiosInstance from '../api/axios';
+import { useTokens } from '../context/useTokens';
 
-const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
+const GPTForm = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [textResult, setTextResult] = useState("");
+
     const [input, setInput] = useState('');
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
 
-    const { user, refreshAccessToken } = useAuth()
+    const { user } = useAuth()
+    const { spendTokens } = useTokens()
 
     const convertImageToText = useCallback(async () => {
         if (!selectedImage) return
@@ -20,7 +25,7 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
         await worker.initialize('ron');
         const { data } = await worker.recognize(selectedImage);
         setTextResult(data.text);
-        setInput(textResult)
+        setInput(data.text)
         setIsLoading('')
     }, [selectedImage, textResult, setTextResult]);
 
@@ -40,13 +45,11 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
                 }
             });
             const data = response.data.toString();
-            console.log('Data type:', typeof data, 'Data value:', data);
             setResult(data);
             setInput('');
             setLoading(false);
-            const refreshToken = localStorage.getItem('refreshToken');
-            // console.log(refreshToken)
-            await refreshAccessToken(refreshToken)
+            // const refreshToken = localStorage.getItem('refreshToken');
+            spendTokens(5)
         } catch (error) {
             console.error(error);
             alert(error.message);
@@ -55,41 +58,80 @@ const GPTForm = ({ selectedImage, textResult, setTextResult }) => {
 
 
     const renderResultWithLineBreaks = () => {
+        console.log(result)
         if (typeof result === 'string') {
             return { __html: result.replace(/\n/g, '<br>') };
         }
         return { __html: '' }; // Return an empty string or some default value if result is not a string
     };
 
+    const handleChangeImage = e => {
+        if (e.target.files[0]) {
+            setSelectedImage(e.target.files[0]);
+        } else {
+            setSelectedImage(null);
+            setTextResult("")
+        }
+    }
+
     return (
-        <div className='flex flex-col xl:flex-row gap-24 items-center'>
-            <main className="flex flex-col items-center">
-                <h3 className='text-2xl font-extrabold my-4'>Enter the questions or upload a photo</h3>
-                <form onSubmit={onSubmit} className="flex flex-col items-center">
+        <div className='flex flex-col w-3/4 min-h-custom bg-red-300 items-center justify-around'>
+            <div className='bg-slate-100 h-full w-full flex-1'>
+                {loading && (
+                    <h1 className="text-xl font-semibold">Loading...</h1>
+                )}
+                {result && (
+                    <>
+                    <div dangerouslySetInnerHTML={renderResultWithLineBreaks()} className="w-full p-4 bg-slate-200 font-semibold border-2 border-black rounded-lg" />
+                    </>
+                )}
+            </div>
+            <div className='flex flex-col w-full bg-slate-500 p-4 rounded-lg items-center'>
+                <h1 className='text-2xl font-bold text-blue-800 mb-4'>Image to Text</h1>
+                <div>
+                    <label htmlFor="upload" className="block text-white font-semibold mb-2">Upload Image:</label>
+                    <input type="file" id="upload" className='p-2 rounded border border-gray-300' accept="image/*" onChange={handleChangeImage} />
+                </div>
+
+                {/* {selectedImage && (
+                    <div className='mt-4'>
+                        <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-full h-auto object-cover rounded-lg" />
+                    </div>
+                )} */}
+
+                <form onSubmit={onSubmit} className="flex flex-col items-center w-full mt-4">
                     <textarea
                         type="text"
                         name="animal"
-                        placeholder={isLoading}
+                        placeholder={isLoading ? "Processing..." : "Enter text here"}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        className="w-96 h-[500px] mb-4 p-2 border-2 border-gray-700 rounded-lg"
+                        className="w-full h-56 p-2 border-2 border-gray-700 rounded-lg resize-none"
                     />
                     <button
                         type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-black border-2"
+                        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-black border-2"
                     >
                         Resolve
                     </button>
                 </form>
-                {loading &&
-                    <>
-                        <h1>Loading...</h1>
-                    </>
-                }
-            </main>
-            {result && <div dangerouslySetInnerHTML={renderResultWithLineBreaks()} className="mt-4 border-black border-2 p-4 max-w-sm bg-white font-semibold" />}
+            </div>
+
+
         </div>
-    )
+    );
 }
 
+
 export default GPTForm
+
+
+// {/* {selectedImage && (
+//                         <div className='mt-6'>
+//                             <img
+//                                 src={URL.createObjectURL(selectedImage)}
+//                                 alt="thumb"
+//                                 className="w-96 h-auto object-cover"
+//                             />
+//                         </div>
+//                     )} */}

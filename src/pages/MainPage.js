@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import AddImage from '../components/AddImage';
+import React from 'react'
 import GPTForm from '../components/GPTForm';
+import "../components/styles/mainContent.css"
+import History from '../components/History';
 
 const MainPage = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [textResult, setTextResult] = useState("");
+  
 
 
   return (
-    <div className="flex relative xl:flex-row flex-col justify-center mt-12 gap-24 items-center min-h-screen">
-      <AddImage selectedImage={selectedImage} setSelectedImage={setSelectedImage} setTextResult={setTextResult} />
-      <GPTForm textResult={textResult} selectedImage={selectedImage} setTextResult={setTextResult} />
+    <div className="flex h-full min-h-custom relative justify-center items-center">
+      <History />
+      <GPTForm />
     </div>
   )
 }
