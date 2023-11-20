@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axiosInstance from '../api/axios'; // Import your custom axios instance
+import { motion } from 'framer-motion';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,9 +28,23 @@ const RegisterPage = () => {
     }
   };
 
+  const formVariants = {
+    hidden: { opacity: 0, y: -100 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, y: 100, transition: { duration: 0.3 } }
+  };
+
   return (
-    <div className="min-h-screen bg-blue-700 flex flex-col justify-center">
-      <div className="max-w-md w-full rounded-md mx-auto bg-white border-gray-300 ">
+    <motion.div
+      className="min-h-screen bg-blue-700 flex flex-col justify-center"
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <motion.div
+        className="max-w-md w-full mx-auto rounded-md bg-white border-gray-300 shadow-lg"
+        variants={formVariants}
+      >
         <div className="text-3xl font-bold text-gray-900 mt-8 text-center">Register</div>
         <div className="p-8">
           <form onSubmit={handleSubmit}>
@@ -54,7 +68,7 @@ const RegisterPage = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded mt-1"
-                  
+
                 />
               </div>
               <div>
@@ -78,8 +92,8 @@ const RegisterPage = () => {
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div >
   );
 };
 

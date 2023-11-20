@@ -54,7 +54,8 @@ export const AuthProvider = ({ children }) => {
 
       if (accessToken && !isTokenExpired(accessToken)) {
         setUser(jwtDecode(accessToken));
-      } else if (refreshToken && !isTokenExpired(refreshToken)) {
+      } 
+      if (refreshToken && !isTokenExpired(refreshToken)) {
         try {
           const newAccessToken = await refreshAccessToken(refreshToken);
           if (newAccessToken) {
@@ -66,12 +67,13 @@ export const AuthProvider = ({ children }) => {
           console.error('Error while refreshing token:', error);
           logout();
         }
-      } else {
+      } else if (user){
         logout();
       }
     };
 
     checkToken();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   const login = (userData, tokens) => {

@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import { jwtDecode } from 'jwt-decode'; // Corrected import statement
 import axiosInstance from '../api/axios'; // Import your custom axios instance
+import google from '../assets/google.png'
+import { motion } from 'framer-motion';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -14,7 +16,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post('/api/auth/authenticate', {
-        username,
+        username: email,
         password
       });
       const data = response.data;
@@ -32,51 +34,76 @@ const LoginPage = () => {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
 
+  const formVariants = {
+    hidden: { opacity: 0, y: -100 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    exit: { opacity: 0, y: 100, transition: { duration: 0.3 } }
+  };
+
+  
   return (
-    <div className="min-h-screen bg-blue-700 flex flex-col justify-center">
-      <div className="max-w-md w-full mx-auto rounded-md bg-white border-gray-300 ">
-        <div className="text-3xl font-bold text-gray-900 mt-8 text-center">Login</div>
+    <motion.div
+      className="min-h-screen bg-gray-500 flex flex-col justify-center"
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <motion.div
+        className="max-w-md w-full mx-auto rounded-md bg-slate-800 text-white border-gray-300 shadow-lg"
+        variants={formVariants}
+      >
+        <div className="text-3xl font-bold text-white mt-8 text-center">Login</div>
         <div className="p-8">
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <div>
-                <label htmlFor="username" className="text-sm font-bold text-gray-600 block">Email</label>
+                <label htmlFor="email" className="text-sm font-boldblock">Email</label>
                 <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  type="email"
+                  id="email"
+                  placeholder='email'
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full text-white p-2 bg-slate-900 border border-gray-300 rounded mt-1"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="text-sm font-bold text-gray-600 block">Password</label>
+                <label htmlFor="password" className="text-sm font-bold block">Password</label>
                 <input
                   type="password"
                   id="password"
+                  placeholder='password'
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  className="w-full text-white p-2 bg-slate-900 border border-gray-300 rounded mt-1"
                 />
               </div>
               <div>
                 <p className='italic'>Don't you have an account?</p>
-                <Link to='/register' className='font-bold text-blue-600 cursor-pointer'>Register</Link>
+                <Link to='/register' className='font-bold text-blue-600 cursor-pointer hover:text-blue-800 transition-all duration-300 ease-in-out'>Register</Link>
               </div>
               <div>
                 <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm">Sign In</button>
               </div>
             </div>
           </form>
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full py-2 px-4 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm mt-4"
-          >
-            Sign in with Google
-          </button>
+          <div className='text-center flex flex-col items-center justify-center gap-2 mt-2'>
+            <h1>Or</h1>
+            <h1>
+              Sign in with Google
+            </h1>
+            <button
+              onClick={handleGoogleLogin}
+              className=""
+            >
+              <img src={google} className='w-8 h-8 hover:scale-110 transition-all duration-300 ease-in-out' alt="google" />
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div >
   );
 };
 

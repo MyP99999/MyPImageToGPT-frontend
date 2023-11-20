@@ -22,28 +22,30 @@ const App = () => {
         <Navbar />
         {children}
       </>
-  )};
+    )
+  };
 
-const RedirectIfLoggedIn = ({ children }) => {
-  if (user) {
-    return <Navigate to="/" replace />;
-  }
-  return children;
-};
+  const RedirectIfLoggedIn = ({ children }) => {
+    if (user) {
+      return <Navigate to="/" replace />;
+    }
+    return children;
+  };
 
-return (
-  <div className='bg-gray-300'>
-    <Routes>
-      <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
-      <Route path='/activate' element={<ActivatePage />} />
-      <Route path="/login/oauth2/code/google" element={<GooglePage />} />
-      <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
-      <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />
-      <Route path='/checkout' element={<ProtectedRoute><TokenPurchasePage /></ProtectedRoute>} />
-      <Route path="*" element={<Missing />} />
-    </Routes>
-  </div>
-);
+
+  return (
+    <div className='bg-gray-300'>
+      <Routes>
+        <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+        <Route path='/activate' element={<ActivatePage />} />
+        <Route path="/login/oauth2/code/google" element={<GooglePage />} />
+        <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
+        <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />
+        <Route path='/checkout' element={<ProtectedRoute><TokenPurchasePage /></ProtectedRoute>} />
+        <Route path="*" element={<Missing />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
