@@ -1,6 +1,6 @@
 const History = () => {
     return (
-        <div className="flex bg-slate-700 w-1/4 flex-col items-center text-center min-h-custom border-2 border-white">
+        <div className="hidden md:flex bg-slate-700 w-1/4 flex-col items-center text-center min-h-custom border-2 border-white">
             <h1 className="my-4 text-xl font-semibold text-white">History</h1>
             <div className="w-full flex flex-1 flex-col justify-between gap-1">
                 <div className="flex flex-col gap-1">

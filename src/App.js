@@ -11,6 +11,7 @@ import { useAuth } from './context/useAuth';
 import Navbar from './components/Navbar';
 
 const App = () => {
+  
   const { user } = useAuth();
 
   const ProtectedRoute = ({ children }) => {

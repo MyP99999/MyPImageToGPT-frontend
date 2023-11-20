@@ -14,7 +14,7 @@ const GPTForm = () => {
     const [isLoading, setIsLoading] = useState('')
 
     const { user } = useAuth()
-    const { spendTokens } = useTokens()
+    const { tokens, spendTokens } = useTokens()
 
     const convertImageToText = useCallback(async () => {
         if (!selectedImage) return
@@ -27,7 +27,7 @@ const GPTForm = () => {
         setTextResult(data.text);
         setInput(data.text)
         setIsLoading('')
-    }, [selectedImage, textResult, setTextResult]);
+    }, [selectedImage, setTextResult]);
 
     useEffect(() => {
         convertImageToText();
@@ -35,24 +35,29 @@ const GPTForm = () => {
 
     async function onSubmit(event) {
         event.preventDefault();
-        setLoading(true);
-        try {
-            // Make a GET request
-            const response = await axiosInstance.get('http://localhost:8080/bot/chat', {
-                params: {
-                    prompt: input,
-                    userId: user.id,
-                }
-            });
-            const data = response.data.toString();
-            setResult(data);
-            setInput('');
-            setLoading(false);
-            // const refreshToken = localStorage.getItem('refreshToken');
-            spendTokens(5)
-        } catch (error) {
-            console.error(error);
-            alert(error.message);
+        let price = 5;
+        if (tokens >= price) {
+            setLoading(true);
+            try {
+                // Make a GET request
+                const response = await axiosInstance.get('http://localhost:8080/bot/chat', {
+                    params: {
+                        prompt: input,
+                        userId: user.id,
+                    }
+                });
+                const data = response.data.toString();
+                setResult(data);
+                setInput('');
+                setLoading(false);
+                // const refreshToken = localStorage.getItem('refreshToken');
+                spendTokens(5)
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+            }
+        } else {
+            alert("You don't have enough tokens!");
         }
     }
 
@@ -75,30 +80,33 @@ const GPTForm = () => {
     }
 
     return (
-        <div className='flex flex-col w-3/4 min-h-custom bg-red-300 items-center justify-around'>
-            <div className='bg-slate-100 h-full w-full flex-1'>
+        <div className='flex flex-col w-full md:w-3/4 min-h-custom bg-red-300 items-center justify-around'>
+            <div className='bg-slate-100 h-full w-full flex-1 overflow-auto custom-scrollbar' style={{ maxHeight: '500px' }}>
                 {loading && (
                     <h1 className="text-xl font-semibold">Loading...</h1>
                 )}
                 {result && (
                     <>
-                    <div dangerouslySetInnerHTML={renderResultWithLineBreaks()} className="w-full p-4 bg-slate-200 font-semibold border-2 border-black rounded-lg" />
+                        <div dangerouslySetInnerHTML={renderResultWithLineBreaks()} className="w-full p-4 bg-slate-200 font-semibold border-2 border-black rounded-lg" />
                     </>
                 )}
             </div>
+
             <div className='flex flex-col w-full bg-slate-500 p-4 rounded-lg items-center'>
-                <h1 className='text-2xl font-bold text-blue-800 mb-4'>Image to Text</h1>
-                <div>
-                    <label htmlFor="upload" className="block text-white font-semibold mb-2">Upload Image:</label>
-                    <input type="file" id="upload" className='p-2 rounded border border-gray-300' accept="image/*" onChange={handleChangeImage} />
-                </div>
-
-                {/* {selectedImage && (
-                    <div className='mt-4'>
-                        <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-full h-auto object-cover rounded-lg" />
+                <div className='flex justify-center items-center gap-10'>
+                    <div>
+                        <h1 className='text-2xl font-bold text-blue-800 mb-4'>Image to Text</h1>
+                        <div>
+                            <label htmlFor="upload" className="block text-white font-semibold mb-2">Upload Image:</label>
+                            <input type="file" id="upload" className='p-2 rounded border border-gray-300' accept="image/*" onChange={handleChangeImage} />
+                        </div>
                     </div>
-                )} */}
-
+                    {selectedImage && (
+                        <div className='w-24'>
+                            <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-full h-auto object-cover rounded-lg" />
+                        </div>
+                    )}
+                </div>
                 <form onSubmit={onSubmit} className="flex flex-col items-center w-full mt-4">
                     <textarea
                         type="text"

@@ -10,8 +10,8 @@ const Navbar = () => {
 
     return (
         <div className='bg-gray-800 shadow-md w-full h-16 '>
-            <div className='flex justify-between items-center max-w-6xl mx-auto px-4 py-2'>
-            <h1 className='text-white font-bold text-3xl hover:scale-105 transition duration-300 ease-in-out'>
+            <div className='flex justify-end md:justify-between items-center max-w-6xl mx-auto px-4 py-2'>
+                <h1 className='hidden md:block text-white font-bold text-3xl hover:scale-105 transition duration-300 ease-in-out'>
                     <Link to="/">
                         My Personal AI
                     </Link>
