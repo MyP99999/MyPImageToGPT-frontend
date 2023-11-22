@@ -80,7 +80,7 @@ const GPTForm = () => {
     }
 
     return (
-        <div className='flex flex-col w-full md:w-3/4 min-h-custom bg-red-300 items-center justify-around'>
+        <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around'>
             <div className='bg-slate-100 h-full w-full flex-1 overflow-auto custom-scrollbar' style={{ maxHeight: '500px' }}>
                 {loading && (
                     <h1 className="text-xl font-semibold">Loading...</h1>

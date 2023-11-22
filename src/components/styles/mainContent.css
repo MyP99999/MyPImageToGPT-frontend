@@ -18,3 +18,8 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.history-items-container {
+    max-height: 82vh;
+    overflow-y:scroll; /* Enables scrolling when content exceeds max height */
+}
