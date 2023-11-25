@@ -24,13 +24,22 @@ export const HistoryProvider = ({ children }) => {
         fetchHistory();
     }, [user]);
 
+    const fetchHistoryById = async (historyID) => {
+        try {
+            const response = await axiosInstance.get(`http://localhost:8080/history/user/${user?.id}/${historyID}`);
+            return response
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     const toggleHistory = () => {
-        setOpen(!open); 
-        console.log(open)
+        setOpen(!open);
     };
 
     return (
-        <HistoryContext.Provider value={{ open, history, toggleHistory }}>
+        <HistoryContext.Provider value={{ open, history, toggleHistory, fetchHistoryById }}>
             {children}
         </HistoryContext.Provider>
     );

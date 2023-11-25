@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      console.log("csaascS")
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
 

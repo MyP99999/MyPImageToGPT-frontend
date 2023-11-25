@@ -9,6 +9,7 @@ import ActivatePage from './pages/ActivatePage';
 import TokenPurchasePage from './pages/TokenPurchasePage';
 import { useAuth } from './context/useAuth';
 import Navbar from './components/Navbar';
+import HistoryDetails from './components/HistoryDetails';
 
 const App = () => {
   
@@ -40,6 +41,7 @@ const App = () => {
         <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
         <Route path='/activate' element={<ActivatePage />} />
         <Route path="/login/oauth2/code/google" element={<GooglePage />} />
+        <Route path="/history/:id" element={<ProtectedRoute><HistoryDetails /></ProtectedRoute>} />
         <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
         <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />
         <Route path='/checkout' element={<ProtectedRoute><TokenPurchasePage /></ProtectedRoute>} />
