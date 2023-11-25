@@ -24,6 +24,15 @@ export const HistoryProvider = ({ children }) => {
         fetchHistory();
     }, [user]);
 
+    const fetchHistory = async () => {
+        try {
+            const response = await axiosInstance.get(`http://localhost:8080/history/user/${user?.id}`);
+            setHistory(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    
     const fetchHistoryById = async (historyID) => {
         try {
             const response = await axiosInstance.get(`http://localhost:8080/history/user/${user?.id}/${historyID}`);
@@ -39,7 +48,7 @@ export const HistoryProvider = ({ children }) => {
     };
 
     return (
-        <HistoryContext.Provider value={{ open, history, toggleHistory, fetchHistoryById }}>
+        <HistoryContext.Provider value={{ open, setOpen, history, fetchHistory, toggleHistory, fetchHistoryById }}>
             {children}
         </HistoryContext.Provider>
     );

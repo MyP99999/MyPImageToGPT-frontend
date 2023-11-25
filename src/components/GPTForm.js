@@ -3,10 +3,12 @@ import { createWorker } from 'tesseract.js';
 import { useAuth } from '../context/useAuth';
 import axiosInstance from '../api/axios';
 import { useTokens } from '../context/useTokens';
+import { useHistory } from '../context/useHistory';
 
 const GPTForm = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [textResult, setTextResult] = useState("");
+    const { fetchHistory } = useHistory()
 
     const [input, setInput] = useState('');
     const [result, setResult] = useState('');
@@ -49,6 +51,7 @@ const GPTForm = () => {
                 const data = response.data.toString();
                 setResult(data);
                 setInput('');
+                fetchHistory()
                 setLoading(false);
                 // const refreshToken = localStorage.getItem('refreshToken');
                 spendTokens(5)
