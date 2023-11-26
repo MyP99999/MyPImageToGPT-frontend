@@ -3,6 +3,7 @@ import { useHistory } from '../context/useHistory';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuth } from '../context/useAuth';
+import Logout from './Logout';
 
 const History = ({ id }) => {
     const { history, setOpen, open } = useHistory();
@@ -54,8 +55,9 @@ const History = ({ id }) => {
                             </div>
                         ))}
                     </div>
-                    <div className="flex p-2 bg-slate-800">
+                    <div className="flex flex-1 justify-between items-center p-2 bg-slate-800">
                         <h1 className="text-white">{user?.sub}</h1>
+                        <Logout />
                     </div>
                 </div>
             </div>

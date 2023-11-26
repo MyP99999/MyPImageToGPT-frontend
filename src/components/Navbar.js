@@ -1,35 +1,16 @@
 import React from 'react'
-import Logout from './Logout'
 import coin from "../assets/coin.png"
 import add from "../assets/add.png"
 import { Link } from 'react-router-dom'
 import { useTokens } from '../context/useTokens'
 import { useHistory } from '../context/useHistory'
 import ToggleButton from './ToggleButton'
-import { motion } from "framer-motion"
 
 const Navbar = () => {
     const { tokens } = useTokens()
     const { toggleHistory } = useHistory()
 
-    const variants = {
-        open: {
-            clipPath: "circle(1200px at 50px 50px)",
-            transition: {
-                type: "spring",
-                stiffness: 20,
-            },
-        },
-        closed: {
-            clipPath: "circle(30px at 50px 50px)",
-            transition: {
-                delay: 0.1,
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-            },
-        },
-    };
+   
 
     return (
         <div className='bg-gray-800 shadow-md w-full h-16 '>
@@ -50,7 +31,6 @@ const Navbar = () => {
                             <img src={add} className='w-8 h-8' alt="add" />
                         </Link>
                     </button>
-                    <Logout />
                 </div>
             </div>
         </div>
