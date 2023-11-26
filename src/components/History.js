@@ -30,11 +30,14 @@ const History = ({ id }) => {
             {/* History Panel */}
             <div className={`min-h-custom bg-slate-700 w-full flex flex-col items-center text-center`}>
                 <h1 className="text-xl font-semibold text-white my-2">History</h1>
-                <Link to={'/'}>
-                    <button className='px-3 text-white mb-2 border-white border-[1px] bg-slate-800 rounded-xl'>
-                        +
-                    </button>
-                </Link>
+                {id && (
+
+                    <Link to={'/'}>
+                        <button className='px-3 text-white mb-2 border-white border-[1px] bg-slate-800 rounded-xl'>
+                            +
+                        </button>
+                    </Link>
+                )}
                 <div className="w-full h-full flex flex-1 flex-col justify-between gap-1 overflow-auto">
                     <div className="history-items-container custom-scrollbar">
                         {reversedHistory.map((item) => (

@@ -4,16 +4,17 @@ import { useAuth } from '../context/useAuth';
 import axiosInstance from '../api/axios';
 import { useTokens } from '../context/useTokens';
 import { useHistory } from '../context/useHistory';
+import coin from "../assets/coin.png"
 
 const GPTForm = () => {
     const [selectedImage, setSelectedImage] = useState(null);
-    const [textResult, setTextResult] = useState("");
     const { fetchHistory } = useHistory()
 
     const [input, setInput] = useState('');
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
+    const [price, setPrice] = useState(1)
 
     const { user } = useAuth()
     const { tokens, spendTokens } = useTokens()
@@ -26,10 +27,9 @@ const GPTForm = () => {
         await worker.loadLanguage('ron');
         await worker.initialize('ron');
         const { data } = await worker.recognize(selectedImage);
-        setTextResult(data.text);
         setInput(data.text)
         setIsLoading('')
-    }, [selectedImage, setTextResult]);
+    }, [selectedImage,]);
 
     useEffect(() => {
         convertImageToText();
@@ -37,7 +37,6 @@ const GPTForm = () => {
 
     async function onSubmit(event) {
         event.preventDefault();
-        let price = 5;
         if (tokens >= price) {
             setLoading(true);
             try {
@@ -46,6 +45,7 @@ const GPTForm = () => {
                     params: {
                         prompt: input,
                         userId: user.id,
+                        price: price,
                     }
                 });
                 const data = response.data.toString();
@@ -53,8 +53,7 @@ const GPTForm = () => {
                 setInput('');
                 fetchHistory()
                 setLoading(false);
-                // const refreshToken = localStorage.getItem('refreshToken');
-                spendTokens(5)
+                spendTokens(price)
             } catch (error) {
                 console.error(error);
                 alert(error.message);
@@ -65,12 +64,13 @@ const GPTForm = () => {
     }
 
 
+
     const renderResultWithLineBreaks = () => {
         console.log(result)
         if (typeof result === 'string') {
             return { __html: result.replace(/\n/g, '<br>') };
         }
-        return { __html: '' }; // Return an empty string or some default value if result is not a string
+        return { __html: '' };
     };
 
     const handleChangeImage = e => {
@@ -78,12 +78,23 @@ const GPTForm = () => {
             setSelectedImage(e.target.files[0]);
         } else {
             setSelectedImage(null);
-            setTextResult("")
+            setInput('')
         }
     }
 
+    const calculatePrice = useCallback((text) => {
+        const letterCount = text.replace(/\s/g, '').length; // Remove spaces to count only letters
+        return Math.ceil(letterCount / 100);
+    }, []);
+
+
+    useEffect(() => {
+        setPrice(calculatePrice(input));
+    }, [input, calculatePrice]);
+
+
     return (
-        <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around'>
+        <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around overflow-auto'>
             <div className='bg-slate-100 h-full w-full flex-1 overflow-auto custom-scrollbar' style={{ maxHeight: '500px' }}>
                 {loading && (
                     <h1 className="text-xl font-semibold">Loading...</h1>
@@ -95,20 +106,35 @@ const GPTForm = () => {
                 )}
             </div>
 
-            <div className='flex flex-col w-full bg-slate-500 p-4 rounded-lg items-center'>
-                <div className='flex justify-center items-center gap-10'>
-                    <div>
+            <div className='flex flex-col w-full bg-slate-500 p-4 rounded-lg items-center '>
+                <div className='flex w-full h-full justify-between items-center'>
+                    <div className='ml-8 p-4'>
                         <h1 className='text-2xl font-bold text-blue-800 mb-4'>Image to Text</h1>
                         <div>
-                            <label htmlFor="upload" className="block text-white font-semibold mb-2">Upload Image:</label>
-                            <input type="file" id="upload" className='p-2 rounded border border-gray-300' accept="image/*" onChange={handleChangeImage} />
+                            <input
+                                type="file"
+                                id="upload"
+                                className="hidden"  // Tailwind class to hide the input
+                                accept="image/*"
+                                onChange={handleChangeImage}
+                            />
+                            <label
+                                htmlFor="upload"
+                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                            >
+                                Upload Image
+                            </label>
                         </div>
                     </div>
                     {selectedImage && (
-                        <div className='w-24'>
+                        <div className='w-24 mr-8'>
                             <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-full h-auto object-cover rounded-lg" />
                         </div>
                     )}
+                    <div className='flex gap-1 mr-8 items-center'>
+                        <h1 className='font-bold text-xl text-white'>Price: <span className='text-yellow-400'>{price}</span> </h1>
+                        <img src={coin} alt="coin" className='w-4 h-4' />
+                    </div>
                 </div>
                 <form onSubmit={onSubmit} className="flex flex-col items-center w-full mt-4">
                     <textarea
@@ -136,13 +162,3 @@ const GPTForm = () => {
 
 export default GPTForm
 
-
-// {/* {selectedImage && (
-//                         <div className='mt-6'>
-//                             <img
-//                                 src={URL.createObjectURL(selectedImage)}
-//                                 alt="thumb"
-//                                 className="w-96 h-auto object-cover"
-//                             />
-//                         </div>
-//                     )} */}
