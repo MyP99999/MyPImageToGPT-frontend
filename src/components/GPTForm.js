@@ -5,6 +5,8 @@ import axiosInstance from '../api/axios';
 import { useTokens } from '../context/useTokens';
 import { useHistory } from '../context/useHistory';
 import coin from "../assets/coin.png"
+import info from "../assets/info.png"
+import Tooltip from './Tooltip';
 
 const GPTForm = () => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -15,7 +17,7 @@ const GPTForm = () => {
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
     const [price, setPrice] = useState(1)
-    const [model, setModel] = useState('gpt-3.5-turbo-1106'); 
+    const [model, setModel] = useState('gpt-3.5-turbo-1106');
     const [prompt, setPrompt] = useState('')
     const [combinedPrompt, setCombinedPrompt] = useState('');
 
@@ -86,15 +88,24 @@ const GPTForm = () => {
         }
     }
 
-    const calculatePrice = useCallback((text) => {
+    const calculatePrice = useCallback((text, model) => {
         const letterCount = text.replace(/\s/g, '').length; // Remove spaces to count only letters
-        return Math.ceil(letterCount / 100);
+        let price = 1;
+        if (letterCount > 100) {
+            // Subtract the first 100 free characters and calculate the price for the remaining characters
+            price += Math.ceil((letterCount - 100) / 100);
+        }
+        if (model === 'gpt-4-1106-preview') {
+            price += 4; // Add 5 tokens for GPT-4
+        }
+        return price;
     }, []);
+
 
     const handleModelChange = (event) => {
         setModel(event.target.value); // Update the model state
     };
-    
+
     const handlePromptChange = (event) => {
         setPrompt(event.target.value); // Update the model state
     };
@@ -105,8 +116,9 @@ const GPTForm = () => {
     }, [input, prompt, combinedPrompt]);
 
     useEffect(() => {
-        setPrice(calculatePrice(input));
-    }, [input, calculatePrice]);
+        setPrice(calculatePrice(input, model));
+    }, [input, model, calculatePrice]);
+
 
     return (
         <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around overflow-auto'>
@@ -127,22 +139,22 @@ const GPTForm = () => {
                         <select
                             name="model"
                             id="model"
-                            value={model} 
+                            value={model}
                             onChange={handleModelChange}
                             className="bg-slate-800 borde text-white py-2 px-2 rounded leading-tight focus:outline-none "
                         >
-                            <option value="gpt-3.5-turbo-1106">gpt-3.5</option>
-                            <option value="gpt-4-1106-preview">gpt-4</option>
+                            <option value="gpt-3.5-turbo-1106" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
+                            <option value="gpt-4-1106-preview" title="GPT-4 model, provides more detailed and nuanced responses.">gpt-4</option>
                         </select>
                         <select
                             name="prompt"
                             id="prompt"
-                            value={prompt} 
+                            value={prompt}
                             onChange={handlePromptChange}
                             className="bg-slate-800 text-white py-2 px-2 rounded leading-tight focus:outline-none "
                         >
-                            <option value="code: ">code</option>
-                            <option value="">prompt</option>
+                            <option value="" title="Prompt mode: Use for general queries.">prompt</option>
+                            <option value="code: " title="Code mode: Use for programming related queries.">code</option>
                         </select>
                     </div>
 
@@ -172,6 +184,9 @@ const GPTForm = () => {
                         )}
                     </div>
                     <div className='flex gap-1 text-lg md:text-xl items-center'>
+                        <Tooltip content="The price is increasing with 1 token every 100 letters">
+                            <img src={info} alt="info" className='w-4 h-4' />
+                        </Tooltip>
                         <h1 className='font-bold  text-white'>Price: <span className='text-yellow-400'>{price}</span> </h1>
                         <img src={coin} alt="coin" className='w-4 h-4' />
                     </div>
