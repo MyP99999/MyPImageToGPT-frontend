@@ -15,6 +15,9 @@ const GPTForm = () => {
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
     const [price, setPrice] = useState(1)
+    const [model, setModel] = useState('gpt-3.5-turbo-1106'); 
+    const [prompt, setPrompt] = useState('')
+    const [combinedPrompt, setCombinedPrompt] = useState('');
 
     const { user } = useAuth()
     const { tokens, spendTokens } = useTokens()
@@ -37,15 +40,17 @@ const GPTForm = () => {
 
     async function onSubmit(event) {
         event.preventDefault();
+
         if (tokens >= price) {
             setLoading(true);
             try {
                 // Make a GET request
                 const response = await axiosInstance.get('http://localhost:8080/bot/chat', {
                     params: {
-                        prompt: input,
+                        prompt: combinedPrompt,
                         userId: user.id,
                         price: price,
+                        model: model,
                     }
                 });
                 const data = response.data.toString();
@@ -66,7 +71,6 @@ const GPTForm = () => {
 
 
     const renderResultWithLineBreaks = () => {
-        console.log(result)
         if (typeof result === 'string') {
             return { __html: result.replace(/\n/g, '<br>') };
         }
@@ -87,11 +91,22 @@ const GPTForm = () => {
         return Math.ceil(letterCount / 100);
     }, []);
 
+    const handleModelChange = (event) => {
+        setModel(event.target.value); // Update the model state
+    };
+    
+    const handlePromptChange = (event) => {
+        setPrompt(event.target.value); // Update the model state
+    };
+
+    useEffect(() => {
+        setCombinedPrompt(prompt + input);
+        console.log(combinedPrompt)
+    }, [input, prompt, combinedPrompt]);
 
     useEffect(() => {
         setPrice(calculatePrice(input));
     }, [input, calculatePrice]);
-
 
     return (
         <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around overflow-auto'>
@@ -112,17 +127,21 @@ const GPTForm = () => {
                         <select
                             name="model"
                             id="model"
+                            value={model} 
+                            onChange={handleModelChange}
                             className="bg-slate-800 borde text-white py-2 px-2 rounded leading-tight focus:outline-none "
                         >
-                            <option value="gpt-3.5">gpt-3.5</option>
-                            <option value="gpt-4">gpt-4</option>
+                            <option value="gpt-3.5-turbo-1106">gpt-3.5</option>
+                            <option value="gpt-4-1106-preview">gpt-4</option>
                         </select>
                         <select
-                            name="model"
-                            id="model"
+                            name="prompt"
+                            id="prompt"
+                            value={prompt} 
+                            onChange={handlePromptChange}
                             className="bg-slate-800 text-white py-2 px-2 rounded leading-tight focus:outline-none "
                         >
-                            <option value="code">code</option>
+                            <option value="code: ">code</option>
                             <option value="">prompt</option>
                         </select>
                     </div>
