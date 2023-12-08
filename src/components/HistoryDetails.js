@@ -27,16 +27,16 @@ const HistoryDetails = () => {
     <div className="flex">
       <History id={id} />
       <div className="flex flex-col w-full md:w-3/4 min-h-custom">
-        <div className='flex flex-col gap-4 h-full w-full p-4 bg-slate-500  overflow-auto custom-scrollbar  overflow-y-auto'>
+        <div className='flex flex-col gap-4 h-full w-full p-4 bg-slate-700  overflow-auto custom-scrollbar  overflow-y-auto'>
           {historyDetail && (
             <>
               <div className='self-start max-w-md lg:max-w-xl xl:max-w-4xl'>
                 <h1 className='text-white font-semibold'>Request: </h1>
-                <p className='bg-blue-200 p-3 rounded-xl break-words'>{historyDetail.question}</p>
+                <p className='bg-blue-200 p-3 rounded-xl break-words whitespace-pre-wrap'>{historyDetail.question}</p>
               </div>
               <div className='self-end max-w-md lg:max-w-xl xl:max-w-4xl'>
                 <h1 className='text-white font-semibold'>Response: </h1>
-                <p className='bg-blue-200 p-3 rounded-xl break-words'>{historyDetail.answer}</p>
+                <p className='bg-blue-200 p-3 rounded-xl break-words whitespace-pre-wrap'>{historyDetail.answer}</p>
               </div>
             </>
           )}

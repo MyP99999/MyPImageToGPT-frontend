@@ -43,13 +43,13 @@ const LoginPage = () => {
   
   return (
     <motion.div
-      className="min-h-screen bg-gray-500 flex flex-col justify-center"
+      className="min-h-screen bg-slate-700 flex flex-col justify-center"
       initial="hidden"
       animate="visible"
       exit="exit"
     >
       <motion.div
-        className="max-w-md w-full mx-auto rounded-md bg-slate-800 text-white border-gray-300 shadow-lg"
+        className="max-w-md w-full mx-auto rounded-md bg-slate-900 text-white border-gray-300 shadow-lg"
         variants={formVariants}
       >
         <div className="text-3xl font-bold text-white mt-8 text-center">Login</div>
@@ -57,7 +57,7 @@ const LoginPage = () => {
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
               <div>
-                <label htmlFor="email" className="text-sm font-boldblock">Email</label>
+                <label htmlFor="email" className="text-sm font-bold block">Email</label>
                 <input
                   type="email"
                   id="email"

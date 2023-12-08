@@ -122,18 +122,18 @@ const GPTForm = () => {
 
     return (
         <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around overflow-auto'>
-            <div className='bg-slate-200 h-full w-full flex-1 overflow-auto custom-scrollbar' style={{ maxHeight: '500px' }}>
+            <div className='bg-slate-600 h-full w-full flex-1 overflow-auto custom-scrollbar' style={{ maxHeight: '500px' }}>
                 {loading && (
                     <h1 className="text-xl font-semibold">Loading...</h1>
                 )}
                 {result && (
                     <>
-                        <div dangerouslySetInnerHTML={renderResultWithLineBreaks()} className="w-full p-4 bg-slate-200 font-semibold border-2 border-black rounded-lg" />
+                        <div dangerouslySetInnerHTML={renderResultWithLineBreaks()} className="w-full p-4  text-white font-semibold " />
                     </>
                 )}
             </div>
 
-            <div className='flex flex-col w-full bg-slate-500 p-4 justify-center items-center '>
+            <div className='flex flex-col w-full bg-slate-800 p-4 justify-center items-center '>
                 <div className='flex w-full h-full justify-between px-8 py-2 items-center'>
                     <div className='flex flex-col justify-center items-center gap-2'>
                         <select
@@ -141,7 +141,7 @@ const GPTForm = () => {
                             id="model"
                             value={model}
                             onChange={handleModelChange}
-                            className="bg-slate-800 borde text-white py-2 px-2 rounded leading-tight focus:outline-none "
+                            className="bg-slate-900 border-2 text-white py-2 px-2 rounded leading-tight focus:outline-none "
                         >
                             <option value="gpt-3.5-turbo-1106" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
                             <option value="gpt-4-1106-preview" title="GPT-4 model, provides more detailed and nuanced responses.">gpt-4</option>
@@ -151,16 +151,16 @@ const GPTForm = () => {
                             id="prompt"
                             value={prompt}
                             onChange={handlePromptChange}
-                            className="bg-slate-800 text-white py-2 px-2 rounded leading-tight focus:outline-none "
+                            className="bg-slate-900 border-2 text-white py-2 px-2 rounded leading-tight focus:outline-none "
                         >
                             <option value="" title="Prompt mode: Use for general queries.">prompt</option>
                             <option value="code: " title="Code mode: Use for programming related queries.">code</option>
                         </select>
                     </div>
 
-                    <div className='flex justify-center items-center'>
+                    <div className='flex justify-center items-center gap-2'>
                         <div className='flex flex-col justify-center items-center'>
-                            <h1 className='hidden md:block text-2xl font-bold text-blue-800 mb-4'>Image to Text</h1>
+                            <h1 className='hidden md:block text-2xl font-bold text-white mb-4'>Image to Text</h1>
                             <div className='flex justify-center items-center'>
                                 <input
                                     type="file"
@@ -198,7 +198,7 @@ const GPTForm = () => {
                         placeholder={isLoading ? "Processing..." : "Enter text here"}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        className="w-full h-56 p-2 border-2 border-gray-700 bg-slate-200 rounded-lg resize-none"
+                        className="w-full text-white h-56 p-2 border-2 border-gray-700 bg-slate-600 rounded-lg resize-none"
                         required
                     />
                     <button

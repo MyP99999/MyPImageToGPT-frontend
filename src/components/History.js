@@ -29,7 +29,7 @@ const History = ({ id }) => {
     return (
         <div className={`${open ? 'absolute p-0 m-0 min-h-custom w-screen' : 'hidden'} md:block md:w-1/4`}>
             {/* History Panel */}
-            <div className={`min-h-custom bg-slate-700 w-full flex flex-col items-center text-center`}>
+            <div className={`min-h-custom bg-slate-800 w-full flex flex-col items-center text-center`}>
                 <h1 className="text-xl font-semibold text-white my-2">History</h1>
                 {id && (
 
@@ -43,7 +43,7 @@ const History = ({ id }) => {
                     <div className="history-items-container custom-scrollbar">
                         {reversedHistory.map((item) => (
                             // eslint-disable-next-line eqeqeq
-                            <div key={item.id} className={`${id == item.id ? 'bg-slate-800' : 'bg-slate-900'} rounded-lg py-2 mb-1 w-full flex items-center justify-between px-4`}>
+                            <div key={item.id} className={`${id == item.id ? 'bg-slate-800 border-2 border-slate-900' : 'bg-slate-900'} rounded-lg py-2 mb-1 w-full flex items-center justify-between px-4`}>
                                 <h1 className="text-lg text-white">
                                     {item.question.length > 20 ? `${item.question.substring(0, 5)}..` : item.question}
                                 </h1>
@@ -55,7 +55,7 @@ const History = ({ id }) => {
                             </div>
                         ))}
                     </div>
-                    <div className="flex flex-1 justify-between items-center p-2 bg-slate-800">
+                    <div className="flex flex-1 justify-between items-center p-2 bg-slate-900">
                         <h1 className="text-white">{user?.sub}</h1>
                         <Logout />
                     </div>
