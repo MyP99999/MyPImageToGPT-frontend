@@ -16,8 +16,10 @@ const ActivatePage = () => {
             }
 
             try {
+                console.log(token)
                 // Call the activation API using Axios with async/await
                 const response = await axiosInstance.get(`http://localhost:8080/api/auth/activate?token=${token}`);
+                console.log(response)
                 setMessage(response.data.message || 'Your account has been successfully activated.');
                 // Redirect after a delay
                 setTimeout(() => navigate('/login'), 3000);
@@ -32,14 +34,14 @@ const ActivatePage = () => {
 
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-200">
-            <div className="max-w-md w-full bg-white shadow-md rounded px-8 py-10 mb-4">
-                <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Account Activation</h1>
+        <div className="flex justify-center items-center min-h-screen bg-slate-700">
+            <div className="max-w-md w-full bg-slate-900 shadow-md rounded px-8 py-10 mb-4">
+                <h1 className="text-2xl font-bold text-white mb-4 text-center">Account Activation</h1>
                 <p className={`text-center font-bold text-xl ${message.includes('error') ? 'text-red-500' : 'text-green-500'}`}>
                     {message}
                 </p>
                 {message.includes('error') &&
-                    <h1 className='text-center mt-4 text-xl flex justify-center items-center gap-2'>
+                    <h1 className='text-center text-white mt-4 text-xl flex justify-center items-center gap-2'>
                         Go to <h1 className='text-2xl text-blue-600 font-bold underline hover:scale-105 hover:text-blue-800 transform transition duration-300'>
                             <Link to='/register'>
                                 Register

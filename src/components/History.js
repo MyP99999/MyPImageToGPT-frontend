@@ -48,15 +48,15 @@ const History = ({ id }) => {
                                     {item.question.length > 20 ? `${item.question.substring(0, 5)}..` : item.question}
                                 </h1>
                                 <Link to={`/history/${item.id}`}>
-                                    <button className="bg-blue-500 p-1 rounded-md">
+                                    <button className="bg-blue-500 hover:bg-blue-700 transition-all ease-in-out duration-300 p-1 rounded-md">
                                         View
                                     </button>
                                 </Link>
                             </div>
                         ))}
                     </div>
-                    <div className="flex flex-1 justify-between items-center p-2 bg-slate-900">
-                        <h1 className="text-white">{user?.sub}</h1>
+                    <div className="flex h-16 justify-end lg:justify-between items-center p-2 bg-slate-900">
+                        <h1 className="hidden lg:block text-white">{user?.sub}</h1>
                         <Logout />
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useAuth } from '../context/useAuth';
 import axiosInstance from '../api/axios'; // Import your custom axios instance
-import { redirect, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
@@ -49,46 +49,44 @@ const CheckoutForm = () => {
     };
 
     return (
-        <div>
-            {loading && <div>Loading...</div>}
-            {error && <div>{error}</div>}
-            <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="amount">
+        <div className="min-h-screen bg-slate-800 text-white flex justify-center items-center">
+            {loading && <div className="text-lg text-blue-300">Loading...</div>}
+            {error && <div className="text-red-500 text-lg mb-4">{error}</div>}
+            <form onSubmit={handleSubmit} className="w-full max-w-lg p-8 bg-slate-900 rounded-lg shadow-md">
+                <div className="mb-6">
+                    <label className="block text-xl font-semibold mb-2" htmlFor="amount">
                         Amount of Tokens
                     </label>
                     <input
                         type="number"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
-                        placeholder="Amount of Tokens"
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Enter amount"
+                        className="w-full px-4 py-2 text-gray-900 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         id="amount"
                     />
                 </div>
 
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                <div className="mb-8">
+                    <label className="block text-xl font-semibold mb-2">
                         Card Details
                     </label>
-                    <div className="p-4 bg-gray-100 rounded">
-                        <CardElement className="p-2 bg-white rounded shadow-inner" />
-                    </div>
+                    <CardElement className="p-4 bg-white text-gray-700 rounded" />
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <button
-                        type="submit"
-                        disabled={!stripe || !elements}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                        Pay
-                    </button>
+                <div className='flex justify-end mr-2 mb-8'>
+                    <h2>Price: {amount}<span>$</span></h2>
                 </div>
+                <button
+                    type="submit"
+                    disabled={!stripe || !elements}
+                    className={`w-full text-lg py-2 rounded font-semibold transition-colors ${stripe && elements ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-400"
+                        }`}
+                >
+                    Pay
+                </button>
             </form>
-
         </div>
-
     );
 };
 

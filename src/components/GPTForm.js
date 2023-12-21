@@ -42,7 +42,7 @@ const GPTForm = () => {
 
     async function onSubmit(event) {
         event.preventDefault();
-
+        setResult('');
         if (tokens >= price) {
             setLoading(true);
             try {
@@ -59,6 +59,7 @@ const GPTForm = () => {
                 setResult(data);
                 setInput('');
                 fetchHistory()
+                setSelectedImage(null)
                 setLoading(false);
                 spendTokens(price)
             } catch (error) {
@@ -80,6 +81,9 @@ const GPTForm = () => {
     };
 
     const handleChangeImage = e => {
+        setInput('');
+        console.log("first")
+        console.log(e.target.files)
         if (e.target.files[0]) {
             setSelectedImage(e.target.files[0]);
         } else {
@@ -112,7 +116,6 @@ const GPTForm = () => {
 
     useEffect(() => {
         setCombinedPrompt(prompt + input);
-        console.log(combinedPrompt)
     }, [input, prompt, combinedPrompt]);
 
     useEffect(() => {
@@ -121,8 +124,8 @@ const GPTForm = () => {
 
 
     return (
-        <div className='flex flex-col w-full md:w-3/4 min-h-custom items-center justify-around overflow-auto'>
-            <div className='bg-slate-600 h-full w-full flex-1 overflow-auto custom-scrollbar' style={{ maxHeight: '500px' }}>
+        <div className='flex h-full flex-col w-full md:w-3/4 min-h-custom items-center justify-around overflow-auto'>
+            <div className='bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 h-full w-full flex-1 overflow-auto custom-scrollbar'>
                 {loading && (
                     <h1 className="text-xl font-semibold">Loading...</h1>
                 )}
@@ -133,15 +136,15 @@ const GPTForm = () => {
                 )}
             </div>
 
-            <div className='flex flex-col w-full bg-slate-800 p-4 justify-center items-center '>
-                <div className='flex w-full h-full justify-between px-8 py-2 items-center'>
+            <div className='flex flex-col h-full w-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 p-4 justify-center items-center '>
+                <div className='flex w-full h-full justify-between md:px-8 py-2 items-center'>
                     <div className='flex flex-col justify-center items-center gap-2'>
                         <select
                             name="model"
                             id="model"
                             value={model}
                             onChange={handleModelChange}
-                            className="bg-slate-900 border-2 text-white py-2 px-2 rounded leading-tight focus:outline-none "
+                            className="bg-slate-900 border-2 text-white sm:p-1 md:p-2 rounded leading-tight focus:outline-none "
                         >
                             <option value="gpt-3.5-turbo-1106" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
                             <option value="gpt-4-1106-preview" title="GPT-4 model, provides more detailed and nuanced responses.">gpt-4</option>
@@ -151,7 +154,7 @@ const GPTForm = () => {
                             id="prompt"
                             value={prompt}
                             onChange={handlePromptChange}
-                            className="bg-slate-900 border-2 text-white py-2 px-2 rounded leading-tight focus:outline-none "
+                            className="bg-slate-900 border-2 text-white sm:p-1 md:p-2 rounded leading-tight focus:outline-none "
                         >
                             <option value="" title="Prompt mode: Use for general queries.">prompt</option>
                             <option value="code: " title="Code mode: Use for programming related queries.">code</option>
@@ -160,7 +163,7 @@ const GPTForm = () => {
 
                     <div className='flex justify-center items-center gap-2'>
                         <div className='flex flex-col justify-center items-center'>
-                            <h1 className='hidden md:block text-2xl font-bold text-white mb-4'>Image to Text</h1>
+                            <h1 className='hidden lg:block text-2xl font-bold text-white mb-4'>Image to Text</h1>
                             <div className='flex justify-center items-center'>
                                 <input
                                     type="file"
@@ -171,23 +174,23 @@ const GPTForm = () => {
                                 />
                                 <label
                                     htmlFor="upload"
-                                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer"
+                                    className="text-xs md:text-md text-center bg-blue-600 border-black border-2 hover:bg-blue-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer"
                                 >
                                     Extract text
                                 </label>
                             </div>
                         </div>
                         {selectedImage && (
-                            <div className='w-24 mr-8'>
+                            <div className='w-10 sm:w-16 lg:w-24 md:mr-8'>
                                 <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-full h-auto object-cover rounded-lg" />
                             </div>
                         )}
                     </div>
-                    <div className='flex gap-1 text-lg md:text-xl items-center'>
+                    <div className='flex gap-1 text-sm md:text-lg items-center'>
                         <Tooltip content="The price is increasing with 1 token every 100 letters">
-                            <img src={info} alt="info" className='w-4 h-4' />
+                            <img src={info} alt="info" className='hidden md:block w-4 h-4' />
                         </Tooltip>
-                        <h1 className='font-bold  text-white'>Price: <span className='text-yellow-400'>{price}</span> </h1>
+                        <h1 className='font-bold flex text-white'>Price: <span className='text-yellow-400'>{price}</span> </h1>
                         <img src={coin} alt="coin" className='w-4 h-4' />
                     </div>
                 </div>
@@ -198,12 +201,12 @@ const GPTForm = () => {
                         placeholder={isLoading ? "Processing..." : "Enter text here"}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        className="w-full text-white h-56 p-2 border-2 border-gray-700 bg-slate-600 rounded-lg resize-none"
+                        className="w-full custom-scrollbar text-white h-48 md:h-56 p-2 border-2 border-gray-700 bg-gradient-to-r from-slate-600 via-slate-500 to-slate-600 rounded-lg resize-none"
                         required
                     />
                     <button
                         type="submit"
-                        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-black border-2"
+                        className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-black border-2"
                     >
                         Resolve
                     </button>

@@ -55,7 +55,7 @@ const LoginPage = () => {
         <div className="text-3xl font-bold text-white mt-8 text-center">Login</div>
         <div className="p-8">
           <form onSubmit={handleSubmit}>
-            <div className="space-y-6">
+            <div className="space-y-2">
               <div>
                 <label htmlFor="email" className="text-sm font-bold block">Email</label>
                 <input
@@ -83,6 +83,9 @@ const LoginPage = () => {
               <div>
                 <p className='italic'>Don't you have an account?</p>
                 <Link to='/register' className='font-bold text-blue-600 cursor-pointer hover:text-blue-800 transition-all duration-300 ease-in-out'>Register</Link>
+              </div>
+              <div className='text-right'>
+                <Link to='/forgot' className='italic text-blue-600 cursor-pointer hover:text-blue-800 transition-all duration-300 ease-in-out'>Forgot Password?</Link>
               </div>
               <div>
                 <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm">Sign In</button>

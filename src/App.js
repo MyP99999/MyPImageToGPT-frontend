@@ -10,6 +10,7 @@ import TokenPurchasePage from './pages/TokenPurchasePage';
 import { useAuth } from './context/useAuth';
 import Navbar from './components/Navbar';
 import HistoryDetails from './components/HistoryDetails';
+import ForgotPage from './pages/ForgotPage';
 
 const App = () => {
   
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/history/:id" element={<ProtectedRoute><HistoryDetails /></ProtectedRoute>} />
         <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
         <Route path='/register' element={<RedirectIfLoggedIn><RegisterPage /></RedirectIfLoggedIn>} />
+        <Route path='/forgot' element={<RedirectIfLoggedIn><ForgotPage /></RedirectIfLoggedIn>} />
         <Route path='/checkout' element={<ProtectedRoute><TokenPurchasePage /></ProtectedRoute>} />
         <Route path="*" element={<Missing />} />
       </Routes>
