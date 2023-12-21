@@ -11,6 +11,7 @@ import { useAuth } from './context/useAuth';
 import Navbar from './components/Navbar';
 import HistoryDetails from './components/HistoryDetails';
 import ForgotPage from './pages/ForgotPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 const App = () => {
   
@@ -41,6 +42,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
         <Route path='/activate' element={<ActivatePage />} />
+        <Route path='/reset-password' element={<ResetPasswordPage />} />
         <Route path="/login/oauth2/code/google" element={<GooglePage />} />
         <Route path="/history/:id" element={<ProtectedRoute><HistoryDetails /></ProtectedRoute>} />
         <Route path='/login' element={<RedirectIfLoggedIn><LoginPage /></RedirectIfLoggedIn>} />
