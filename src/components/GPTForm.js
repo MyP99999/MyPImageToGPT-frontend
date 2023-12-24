@@ -17,14 +17,15 @@ const GPTForm = () => {
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState('')
     const [price, setPrice] = useState(1)
-    const [model, setModel] = useState('gpt-3.5-turbo-1106');
+    const [model, setModel] = useState('gpt-4-vision-preview');
     const [prompt, setPrompt] = useState('')
     const [combinedPrompt, setCombinedPrompt] = useState('');
+    const [complexOCR, setComplexOCR] = useState(false)
 
     const { user } = useAuth()
     const { tokens, spendTokens } = useTokens()
 
-    const convertImageToText = useCallback(async () => {
+    const convertImageToText = async () => {
         if (!selectedImage) return
         setIsLoading('loading')
         const worker = await createWorker();
@@ -34,33 +35,61 @@ const GPTForm = () => {
         const { data } = await worker.recognize(selectedImage);
         setInput(data.text)
         setIsLoading('')
-    }, [selectedImage,]);
-
-    useEffect(() => {
-        convertImageToText();
-    }, [selectedImage, convertImageToText]);
+    }
 
     async function onSubmit(event) {
         event.preventDefault();
         setResult('');
         if (tokens >= price) {
             setLoading(true);
+            console.log(combinedPrompt)
+            console.log(model)
             try {
                 // Make a GET request
-                const response = await axiosInstance.get('http://localhost:8080/bot/chat', {
-                    params: {
-                        prompt: combinedPrompt,
-                        userId: user.id,
-                        price: price,
-                        model: model,
-                    }
+                const response = await axiosInstance.post('http://localhost:8080/bot/chat', {
+                    prompt: combinedPrompt,
+                    userId: user.id,
+                    price: price,
+                    model: model,
                 });
                 const data = response.data.toString();
+                console.log(response)
                 setResult(data);
                 setInput('');
                 fetchHistory()
                 setSelectedImage(null)
                 setLoading(false);
+                spendTokens(price)
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+            }
+        } else {
+            alert("You don't have enough tokens!");
+        }
+    }
+
+
+    async function extractTextWithAI(event) {
+        event.preventDefault();
+        setResult('');
+        if (tokens >= price) {
+            setIsLoading(true);
+            console.log(combinedPrompt)
+            console.log(model)
+            try {
+                // Make a GET request
+                const response = await axiosInstance.post('http://localhost:8080/bot/chat', {
+                    prompt: 'Extract the text from the image',
+                    userId: user.id,
+                    price: 5,
+                    model: 'gpt-4-vision-preview',
+                    imageData: "https://academiaabc.ro/wp-content/uploads/2021/06/Test-evaluare-matematica-clasa-a-II-a-1.jpg"
+                });
+                const data = response.data.toString();
+
+                setInput(data);
+                setIsLoading(false);
                 spendTokens(price)
             } catch (error) {
                 console.error(error);
@@ -82,15 +111,33 @@ const GPTForm = () => {
 
     const handleChangeImage = e => {
         setInput('');
-        console.log("first")
-        console.log(e.target.files)
-        if (e.target.files[0]) {
-            setSelectedImage(e.target.files[0]);
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setSelectedImage(file)
+            // const reader = new FileReader();
+            // reader.onloadend = () => {
+            //     setSelectedImage(reader.result); // Base64 encoded string
+            // };
+            // reader.readAsDataURL(file);
         } else {
             setSelectedImage(null);
             setInput('')
         }
     }
+
+    // useEffect(() => {
+    //     let url;
+    //     if (selectedImage) {
+    //         url = URL.createObjectURL(selectedImage);
+    //         console.log(url)
+    //     }
+
+    //     return () => {
+    //         if (url) {
+    //             URL.revokeObjectURL(url);
+    //         }
+    //     };
+    // }, [selectedImage]);
 
     const calculatePrice = useCallback((text, model) => {
         const letterCount = text.replace(/\s/g, '').length; // Remove spaces to count only letters
@@ -146,7 +193,7 @@ const GPTForm = () => {
                             onChange={handleModelChange}
                             className="bg-slate-900 border-2 text-white sm:p-1 md:p-2 rounded leading-tight focus:outline-none "
                         >
-                            <option value="gpt-3.5-turbo-1106" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
+                            <option value="gpt-4-vision-preview" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
                             <option value="gpt-4-1106-preview" title="GPT-4 model, provides more detailed and nuanced responses.">gpt-4</option>
                         </select>
                         <select
@@ -160,24 +207,36 @@ const GPTForm = () => {
                             <option value="code: " title="Code mode: Use for programming related queries.">code</option>
                         </select>
                     </div>
-
                     <div className='flex justify-center items-center gap-2'>
-                        <div className='flex flex-col justify-center items-center'>
-                            <h1 className='hidden lg:block text-2xl font-bold text-white mb-4'>Image to Text</h1>
-                            <div className='flex justify-center items-center'>
+                        <div className='flex flex-col justify-center items-center gap-2'>
+                            <div className='flex flex-col justify-center items-center'>
+                                <h1 className='hidden lg:block text-2xl font-bold text-white mb-4'>Image to Text</h1>
+                                <div className='flex justify-center items-center'>
+                                    <input
+                                        type="file"
+                                        id="upload"
+                                        className="hidden"  // Tailwind class to hide the input
+                                        accept="image/*"
+                                        onChange={handleChangeImage}
+                                    />
+                                    <label
+                                        htmlFor="upload"
+                                        className="text-xs md:text-md text-center bg-blue-600 border-black border-2 hover:bg-blue-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer"
+                                    >
+                                        Select Image
+                                    </label>
+                                    <button className="text-xs ml-1 md:text-md text-center bg-blue-600 border-black border-2 hover:bg-blue-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer" onClick={complexOCR === true ? extractTextWithAI : convertImageToText}>
+                                        Extract text
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label htmlFor="ocr" className='text-white text-xl mr-2'>Complex OCR:</label>
                                 <input
-                                    type="file"
-                                    id="upload"
-                                    className="hidden"  // Tailwind class to hide the input
-                                    accept="image/*"
-                                    onChange={handleChangeImage}
+                                    type="checkbox"
+                                    checked={complexOCR}
+                                    onChange={(e) => setComplexOCR(e.target.checked)}
                                 />
-                                <label
-                                    htmlFor="upload"
-                                    className="text-xs md:text-md text-center bg-blue-600 border-black border-2 hover:bg-blue-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer"
-                                >
-                                    Extract text
-                                </label>
                             </div>
                         </div>
                         {selectedImage && (
@@ -186,6 +245,7 @@ const GPTForm = () => {
                             </div>
                         )}
                     </div>
+                   
                     <div className='flex gap-1 text-sm md:text-lg items-center'>
                         <Tooltip content="The price is increasing with 1 token every 100 letters">
                             <img src={info} alt="info" className='hidden md:block w-4 h-4' />
