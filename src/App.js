@@ -12,6 +12,7 @@ import Navbar from './components/Navbar';
 import HistoryDetails from './components/HistoryDetails';
 import ForgotPage from './pages/ForgotPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import AboutPage from './pages/AboutPage';
 
 const App = () => {
   
@@ -19,7 +20,7 @@ const App = () => {
 
   const ProtectedRoute = ({ children }) => {
     if (!user) {
-      return <Navigate to="/login" replace />;
+      return <Navigate to="/about" replace />;
     }
     return (
       <>
@@ -41,6 +42,7 @@ const App = () => {
     <div className='bg-gray-300'>
       <Routes>
         <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
+        <Route path='/about' element={<AboutPage />} />
         <Route path='/activate' element={<ActivatePage />} />
         <Route path='/reset-password' element={<ResetPasswordPage />} />
         <Route path="/login/oauth2/code/google" element={<GooglePage />} />

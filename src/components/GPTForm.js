@@ -88,10 +88,11 @@ const GPTForm = () => {
                     imageData: "https://academiaabc.ro/wp-content/uploads/2021/06/Test-evaluare-matematica-clasa-a-II-a-1.jpg"
                 });
                 const data = response.data.toString();
-
+            
+                fetchHistory()
                 setInput(data);
                 setIsLoading(false);
-                spendTokens(price)
+                spendTokens(5)
             } catch (error) {
                 console.error(error);
                 alert(error.message);

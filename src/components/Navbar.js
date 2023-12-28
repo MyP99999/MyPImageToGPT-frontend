@@ -22,7 +22,7 @@ const Navbar = () => {
                 </h1>
 
                 <div className='flex gap-3 items-center'>
-                    <BlackTooltip title='asddas'>
+                    <BlackTooltip title="This is the app's currency.">
                         <div className='flex items-center gap-1'> {/* Apply flex layout to this container */}
                             <img src={coin} alt="coin" className='w-8 h-8' />
                             <h2 className='font-semibold text-yellow-500 text-lg'>{tokens} tokens</h2>
