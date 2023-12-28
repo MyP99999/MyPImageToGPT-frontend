@@ -6,7 +6,8 @@ import { useTokens } from '../context/useTokens';
 import { useHistory } from '../context/useHistory';
 import coin from "../assets/coin.png"
 import info from "../assets/info.png"
-import Tooltip from './Tooltip';
+import Fade from '@mui/material/Fade';
+import BlackTooltip from './BlackTooltip';
 
 const GPTForm = () => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -231,12 +232,18 @@ const GPTForm = () => {
                                 </div>
                             </div>
                             <div>
-                                <label htmlFor="ocr" className='text-white text-xl mr-2'>Complex OCR:</label>
-                                <input
-                                    type="checkbox"
-                                    checked={complexOCR}
-                                    onChange={(e) => setComplexOCR(e.target.checked)}
-                                />
+                                <BlackTooltip
+                                    followCursor
+                                    TransitionComponent={Fade}
+                                    title="This is a more complex OCR, but the price for this is 5 tokens"
+                                >
+                                    <label htmlFor="ocr" className='text-white text-xl mr-2'>Complex OCR:</label>
+                                    <input
+                                        type="checkbox"
+                                        checked={complexOCR}
+                                        onChange={(e) => setComplexOCR(e.target.checked)}
+                                    />
+                                </BlackTooltip>
                             </div>
                         </div>
                         {selectedImage && (
@@ -245,11 +252,15 @@ const GPTForm = () => {
                             </div>
                         )}
                     </div>
-                   
+
                     <div className='flex gap-1 text-sm md:text-lg items-center'>
-                        <Tooltip content="The price is increasing with 1 token every 100 letters">
+                        <BlackTooltip
+                            followCursor
+                            TransitionComponent={Fade}
+                            title="The price is increasing with 1 token every 100 letters"
+                        >
                             <img src={info} alt="info" className='hidden md:block w-4 h-4' />
-                        </Tooltip>
+                        </BlackTooltip>
                         <h1 className='font-bold flex text-white'>Price: <span className='text-yellow-400'>{price}</span> </h1>
                         <img src={coin} alt="coin" className='w-4 h-4' />
                     </div>
