@@ -1,6 +1,6 @@
-import React from 'react'
+import Sidebar from './Sidebar'
+import './styles/navbar.scss'
 import { motion } from 'framer-motion';
-import Sidebar from './Sidebar';
 
 // ... Other imports
 const socials = [
@@ -50,20 +50,19 @@ const AboutNavbar = () => {
     };
 
     return (
-        <div className='h-[100px]'>
+        <div className='navbar bg-[#0c0c1d]'>
             <Sidebar />
-            <div className="m-auto max-w-[1366px] flex justify-end md:justify-between items-center h-full">
+            <div className="wrapper">
                 <motion.span
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className='font-bold hidden md:block'
                 >
                 </motion.span>
-                <motion.div className="flex gap-5" variants={containerVariants} initial="hidden" animate="visible">
+                <motion.div className="social" variants={containerVariants} initial="hidden" animate="visible">
                     {socials.map((s, index) => (
                         <motion.a href={s.link} key={index} variants={itemVariants}>
-                            <img src={s.name} alt="" className='w-5 h-5' />
+                            <img src={s.name} alt="" />
                         </motion.a>
                     ))}
                 </motion.div>

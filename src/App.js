@@ -39,7 +39,7 @@ const App = () => {
 
 
   return (
-    <div className='bg-gray-300'>
+    <div>
       <Routes>
         <Route path='/' element={<ProtectedRoute><MainPage /></ProtectedRoute>} />
         <Route path='/about' element={<AboutPage />} />

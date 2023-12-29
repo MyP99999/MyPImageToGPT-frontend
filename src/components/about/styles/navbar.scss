@@ -1,0 +1,44 @@
+@import "./about.scss";
+
+.navbar {
+    height: 100px;
+
+    .wrapper {
+        max-width: 1366px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        @include mobile {
+            justify-content: end;
+        }
+
+        @include tablet {
+            justify-content: end;
+        }
+
+        span {
+            font-weight: bold;
+
+            @include mobile {
+                display: none;
+            }
+
+            @include tablet {
+                display: none;
+            }
+        }
+
+        .social {
+            display: flex;
+            gap: 20px;
+
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}

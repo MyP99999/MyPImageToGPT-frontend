@@ -1,0 +1,120 @@
+@import "./about.scss";
+
+.contact {
+    height: 100%;
+    max-width: 1366px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    @include tablet {
+        width: 100%;
+        padding: 10px;
+        flex-direction: column;
+    }
+
+    .textContainer {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+
+        @include tablet {
+            gap: 20px;
+            text-align: center;
+            align-items: center;
+            margin-top: 70px;
+        }
+
+        h1 {
+            font-size: 100px;
+            line-height: 88px;
+
+            @include tablet {
+                font-size: 36px;
+            }
+        }
+
+        span {
+            font-weight: 300;
+        }
+    }
+
+    .formContainer {
+        flex: 1;
+        position: relative;
+
+        @include tablet {
+            padding: 50px;
+            width: 100%;
+        }
+
+
+        .phoneSvg {
+            stroke: orange;
+            position: absolute;
+
+            margin: auto;
+            z-index: -1;
+            transform: translate(50%, 0%);
+
+            @include tablet {
+                transform: translate(50%, 0%);
+            }
+
+            @include mobile {
+                transform: none;
+            }
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+
+            @include tablet {
+                width: 85%;
+                margin: auto;
+            }
+
+            @include mobile {
+                padding: 10px;
+                width: 100%;
+                margin: auto;
+            }
+
+            input,
+            textarea {
+                padding: 20px;
+                background-color: transparent;
+                border: 1px solid white;
+                color: white;
+                border-radius: 5px;
+
+                @include tablet {
+                    padding: 10px;
+                }
+            }
+
+            button {
+                padding: 20px;
+                border: none;
+                background-color: orange;
+                cursor: pointer;
+                font-weight: 500;
+
+                @include tablet {
+                    padding: 10px;
+                }
+            }
+
+            button:hover {
+                background-color: #ff7300;
+            }
+
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Links } from "./links/Links";
-import ToggleButton from "./toggleButton/ToggleButton";
 import { motion } from "framer-motion";
+import ToggleButtonAbout from "./toggleButton/ToggleButtonAbout";
 
 function Sidebar() {
     const [open, setOpen] = useState(false);
@@ -30,7 +30,7 @@ function Sidebar() {
             <motion.div className="fixed top-0 left-0 bottom-0 w-[400px] bg-white z-10" variants={variants}>
                 <Links />
             </motion.div>
-            <ToggleButton setOpen={setOpen} />
+            <ToggleButtonAbout setOpen={setOpen} />
         </motion.div>
     );
 }

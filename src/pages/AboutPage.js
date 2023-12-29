@@ -1,12 +1,13 @@
 import React from 'react'
-import '../components/styles/about.css'
-import HomePage from '../components/HomePage'
-import AboutNavbar from '../components/AboutNavbar'
-import Parallax from '../components/Parallax'
+import AboutNavbar from '../components/about/AboutNavbar'
+import HomePage from '../components/about/HomePage'
+import Parallax from '../components/about/Parallax'
+import Contact from '../components/about/Contact'
+import '../components/about/styles/about.scss'
 
 const AboutPage = () => {
     return (
-        <>
+        <div className=''>
             <section id="Homepage">
                 <AboutNavbar />
                 <HomePage />
@@ -14,10 +15,10 @@ const AboutPage = () => {
             <section id="Services"><Parallax type="services" /></section>
             {/* <section><Services /></section> */}
             <section id="Portfolio"><Parallax type="portfolio" /></section>
-            <section>
-                <h1>sdadas</h1>
+            <section id="Contact">
+                <Contact />
             </section>
-        </>
+        </div>
     )
 }
 

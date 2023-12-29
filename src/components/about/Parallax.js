@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import './styles/parallax.scss'
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const Parallax = ({ type }) => {
@@ -21,15 +22,15 @@ const Parallax = ({ type }) => {
     )
 
     return (
-        <div ref={ref} className='w-full h-full relative flex items-center justify-center overflow-hidden' style={{
+        <div ref={ref} className='parallax' style={{
             background: type === "services"
                 ? "linear-gradient(180deg, #111132, #0c0c1d)"
                 : "linear-gradient(180deg, #111132, #505064)"
         }}>
-            <motion.h1 className='text-[72px] text-center xl:text-[100px]' style={{ y: yText }}>{type === "services" ? "What I Do?" : "What I Did"}</motion.h1>
-            <motion.div className="bg-no-repeat bg-contain xl:bg-cover w-full h-full absolute z-3 bg-bottom" style={{ backgroundImage: 'url("/mountains.png")' }}></motion.div>
+            <motion.h1 style={{ y: yText }}>{type === "services" ? "What I Do?" : "What I Did"}</motion.h1>
+            <motion.div className="mountains"></motion.div>
             <motion.div
-                className="xl:bg-cover bg-bottom w-full h-full absolute z-2 bg-contain bg-no-repeat"
+                className="planets"
                 style={{
                     y: yBg,
                     backgroundImage: `url(${type === "services" ? "/planets.png" : "/sun.png"
@@ -37,7 +38,7 @@ const Parallax = ({ type }) => {
                 }}
             >
             </motion.div>
-            <motion.div style={{ x: yBg, backgroundImage: 'url("/stars.png")' }} className="bg-cover bg-bottom w-full h-full absolute z-1" ></motion.div>
+            <motion.div style={{ x: yBg }} className="stars"></motion.div>
         </div>
     )
 }
