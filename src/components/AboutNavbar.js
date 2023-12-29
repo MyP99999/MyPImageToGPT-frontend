@@ -50,7 +50,7 @@ const AboutNavbar = () => {
     };
 
     return (
-        <div className='h-24'>
+        <div className='h-[100px]'>
             <Sidebar />
             <div className="m-auto max-w-[1366px] flex justify-end md:justify-between items-center h-full">
                 <motion.span
