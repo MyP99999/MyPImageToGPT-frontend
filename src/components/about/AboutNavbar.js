@@ -59,13 +59,13 @@ const AboutNavbar = () => {
                     transition={{ duration: 0.5 }}
                 >
                 </motion.span>
-                <motion.div className="social" variants={containerVariants} initial="hidden" animate="visible">
+                {/* <motion.div className="social" variants={containerVariants} initial="hidden" animate="visible">
                     {socials.map((s, index) => (
                         <motion.a href={s.link} key={index} variants={itemVariants}>
                             <img src={s.name} alt="" />
                         </motion.a>
                     ))}
-                </motion.div>
+                </motion.div> */}
             </div>
         </div>
     )

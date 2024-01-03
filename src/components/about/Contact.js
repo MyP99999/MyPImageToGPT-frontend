@@ -3,6 +3,14 @@ import "./styles/contact.scss";
 import { motion, useInView } from "framer-motion";
 import emailjs from "@emailjs/browser";
 
+const social = [
+    {
+        id: 0,
+        name: '/linkedin.png',
+        link: 'https://www.linkedin.com/in/matheos-profirescu-2a8778172/',
+    },
+]
+
 const variants = {
     initial: {
         y: 500,
@@ -32,17 +40,27 @@ const Contact = () => {
 
         emailjs
             .sendForm(
-                "service_94y20xo",
-                "template_v10u2oh",
+                "service_qjs75y9",
+                "template_zlfdbc9",
                 formRef.current,
-                "pX_2hasGmGcuvjXIW"
+                "0hhvPRXsK_YhqNUF9"
             )
             .then(
                 (result) => {
-                    setSuccess(true)
+                    console.log(result);
+                    setSuccess(true);
+                    // Set a timeout to make success message disappear after 3 seconds
+                    setTimeout(() => {
+                        setSuccess(false);
+                    }, 3000);
                 },
                 (error) => {
+                    console.error(error);
                     setError(true);
+                    // Set a timeout to make error message disappear after 3 seconds
+                    setTimeout(() => {
+                        setError(false);
+                    }, 3000);
                 }
             );
     };
@@ -58,8 +76,13 @@ const Contact = () => {
             <motion.div className="textContainer" variants={variants}>
                 <motion.h1 variants={variants}>Let&apos;s work together</motion.h1>
                 <motion.div className="item" variants={variants}>
-                    <h2>Mail</h2>
-                    <span>matheosprofirescu@yahoo.com</span>
+                    <h2>Author</h2>
+                    <div className="flex items-center gap-1">
+                        <span>Profirescu Matheos</span>
+                        <a href={social[0].link}>
+                            <img src={social[0].name} alt="linkdin profile" className="w-4 h-4 cursor-pointer rounded-sm" />
+                        </a>
+                    </div>
                 </motion.div>
                 <motion.div className="item" variants={variants}>
                     <h2>Country</h2>
@@ -107,8 +130,8 @@ const Contact = () => {
                     <input type="email" required placeholder="Email" name="email" />
                     <textarea rows={3} placeholder="Message" name="message" />
                     <button>Submit</button>
-                    {error && "Error"}
-                    {success && "Success"}
+                    {error && <h1 className="text-center text-red-500">Something went wrong! Please try this later!</h1>}
+                    {success && <h1 className="text-green-500 text-center">The message was successfully sent!</h1>}
                 </motion.form>
             </div>
         </motion.div>

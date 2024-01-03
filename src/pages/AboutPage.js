@@ -4,6 +4,7 @@ import HomePage from '../components/about/HomePage'
 import Parallax from '../components/about/Parallax'
 import Contact from '../components/about/Contact'
 import '../components/about/styles/about.scss'
+import Technologies from '../components/about/technologies/Technologies'
 
 const AboutPage = () => {
     return (
@@ -13,8 +14,7 @@ const AboutPage = () => {
                 <HomePage />
             </section>
             <section id="Services"><Parallax type="services" /></section>
-            {/* <section><Services /></section> */}
-            <section id="Portfolio"><Parallax type="portfolio" /></section>
+            <Technologies />
             <section id="Contact">
                 <Contact />
             </section>

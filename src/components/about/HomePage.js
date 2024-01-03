@@ -46,7 +46,7 @@ const HomePage = () => {
                     <motion.h2 variants={textVariants}>MyP Image to GPT</motion.h2>
                     <motion.h1 variants={textVariants}>The Best OCR Solver APP</motion.h1>
                     <motion.div variants={textVariants} className="buttons">
-                        <motion.a href='#Portfolio' variants={textVariants}>
+                        <motion.a href='/login' variants={textVariants}>
                             Get Started
                         </motion.a>
                         <motion.a href='#Contact' variants={textVariants}>
@@ -56,7 +56,7 @@ const HomePage = () => {
                     <motion.img variants={textVariants} animate="scrollButton" src="/scroll.png" alt="" />
                 </motion.div>
                 <motion.div className="slidingTextContainer" variants={sliderVariants} initial="initial" animate="animate">
-                    Full-Stack Developer
+                    MyP Image to GPT
                 </motion.div>
                 <div className="imageContainer">
                     <img src="/logo.png" alt="" />

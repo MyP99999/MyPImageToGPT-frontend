@@ -13,7 +13,7 @@ const GooglePage = () => {
     async function handleGoogleAuth() {
       const queryParams = new URLSearchParams(location.search);
       const code = queryParams.get('code');
-
+      console.log(typeof(code))
       if (code) {
         try {
           console.log(code)

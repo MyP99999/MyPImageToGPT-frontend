@@ -195,7 +195,7 @@ const GPTForm = () => {
                             onChange={handleModelChange}
                             className="bg-slate-900 border-2 text-white sm:p-1 md:p-2 rounded leading-tight focus:outline-none "
                         >
-                            <option value="gpt-4-vision-preview" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
+                            <option value="gpt-3.5-turbo-1106" title="GPT-3.5 model, optimized for faster responses.">gpt-3.5</option>
                             <option value="gpt-4-1106-preview" title="GPT-4 model, provides more detailed and nuanced responses.">gpt-4</option>
                         </select>
                         <select
