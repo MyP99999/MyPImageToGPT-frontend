@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import './Technologies.scss'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import { items } from '../items/items';
 
 const renderRatingBar = (rating, maxRating = 5) => {
@@ -21,12 +20,7 @@ const Single = ({ item }) => {
     });
 
     const y = useTransform(scrollYProgress, [0, 1], [-200, 200]);
-    const navigate = useNavigate();
-
-    const goToDemo = () => {
-        navigate(`/demo/${item.id}`);
-    };
-
+ 
     const trimDescription = (desc, wordLimit) => {
         const words = desc.split(' ');
         if (words.length > wordLimit) {
@@ -57,7 +51,7 @@ const Single = ({ item }) => {
                     </div>
                     <motion.div className="textContainer flex-1 flex flex-col gap-7" style={{ y }}>
                         <h2 className="text-4xl md:text-9xl">{item.title}</h2>
-                        <p className="text-gray-500 text-base md:text-lg">{trimDescription(item.desc, 50)}</p>
+                        <p className="text-gray-500 text-base md:text-lg">{trimDescription(item.desc, 60)}</p>
                         <p className='font-semibold'>Technologie: {item.tech}</p>
                     </motion.div>
                 </div>
@@ -80,7 +74,7 @@ const Technologies = () => {
     return (
         <div className='portfolio' ref={ref}>
             <div className="progress">
-                <h1>Performance</h1>
+                <h1>AI & OCR Capabilities</h1>
                 <motion.div style={{ scaleX }} className="progressBar"></motion.div>
             </div>
             {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axiosInstance from '../api/axios'; // Import your custom axios instance
 import { motion } from 'framer-motion';
 import google from '../assets/google.png'
+import Sidebar from '../components/about/Sidebar';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
@@ -39,18 +40,36 @@ const RegisterPage = () => {
     exit: { opacity: 0, y: 100, transition: { duration: 0.3 } }
   };
 
+  const sliderVariants = {
+    initial: {
+      x: 0,
+    },
+    animate: {
+      x: "-220%",
+      transition: {
+        repeat: Infinity,
+        repeatType: "mirror",
+        duration: 15,
+      }
+    }
+  }
+  
   return (
     <motion.div
-      className="min-h-screen bg-slate-700 flex flex-col justify-center"
+      className="min-h-screen bg-slate-700 flex flex-col justify-center overflow-hidden relative bg-gradient-to-b from-[#0c0c1d] to-[#111132]"
       initial="hidden"
       animate="visible"
       exit="exit"
     >
+
       <motion.div
         className="max-w-md w-full mx-auto rounded-md bg-slate-900 text-white border-gray-300 shadow-lg"
         variants={formVariants}
       >
-        <div className="text-3xl font-bold text-white mt-8 text-center">Register</div>
+        <div className='w-full flex items-center p-2 justify-center h-full'>
+          <img src='/logo.png' className='w-20' alt="Logo" />
+        </div>
+        <div className="text-3xl font-bold text-white text-center">Register</div>
         <div className="p-8">
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
@@ -109,6 +128,10 @@ const RegisterPage = () => {
             </button>
           </div>
         </div>
+      </motion.div>
+      <Sidebar />
+      <motion.div className="absolute text-[50vh] bottom-[-120px] whitespace-nowrap text-[#ffffff09] w-1/2 font-bold pointer-events-none" variants={sliderVariants} initial="initial" animate="animate">
+        MyP Image to GPT
       </motion.div>
     </motion.div >
   );

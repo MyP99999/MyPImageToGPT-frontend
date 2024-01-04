@@ -31,7 +31,7 @@ export const Links = () => {
         <motion.div className="absolute w-full h-full flex flex-col justify-center items-center gap-5" variants={variants}>
             {items.map((item) => (
                 <motion.a
-                    href={`#${item}`}
+                    href={`/about/#${item}`}
                     key={item}
                     variants={itemVariants}
                     whileHover={{ scale: 1.1 }}
