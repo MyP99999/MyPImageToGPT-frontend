@@ -13,7 +13,7 @@ const AboutPage = () => {
                 <AboutNavbar />
                 <HomePage />
             </section>
-            <section id="Services"><Parallax type="services" /></section>
+            <section id="Capabilities"><Parallax type="services" /></section>
             <Technologies />
             <section id="Contact">
                 <Contact />
