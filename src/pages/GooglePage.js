@@ -41,7 +41,7 @@ const GooglePage = () => {
   }, [location, navigate, login]); // Dependencies
 
 
-  return <h1>asdasdasd</h1>;
+  return <h1>Signing with google</h1>;
 };
 
 export default GooglePage;
