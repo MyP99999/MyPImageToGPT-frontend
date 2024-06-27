@@ -32,7 +32,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.REACT_APP_URL}oauth2/authorization/google`;
+    window.location.href = `oauth2/authorization/google`;
   };
 
   const formVariants = {
