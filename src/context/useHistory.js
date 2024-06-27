@@ -14,7 +14,7 @@ export const HistoryProvider = ({ children }) => {
     useEffect(() => {
         const fetchHistory = async () => {
             try {
-                const response = await axiosInstance.get(`${process.env.REACT_APP_URL}history/user/${user?.id}`);
+                const response = await axiosInstance.get(`/history/user/${user?.id}`);
                 setHistory(response.data);
             } catch (error) {
                 console.log(error);
@@ -26,7 +26,7 @@ export const HistoryProvider = ({ children }) => {
 
     const fetchHistory = async () => {
         try {
-            const response = await axiosInstance.get(`${process.env.REACT_APP_URL}history/user/${user?.id}`);
+            const response = await axiosInstance.get(`/history/user/${user?.id}`);
             setHistory(response.data);
         } catch (error) {
             console.log(error);
@@ -35,7 +35,7 @@ export const HistoryProvider = ({ children }) => {
     
     const fetchHistoryById = async (historyID) => {
         try {
-            const response = await axiosInstance.get(`${process.env.REACT_APP_URL}history/user/${user?.id}/${historyID}`);
+            const response = await axiosInstance.get(`/history/user/${user?.id}/${historyID}`);
             return response
         } catch (error) {
             console.log(error);

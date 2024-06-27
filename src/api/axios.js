@@ -2,7 +2,7 @@ import axios from 'axios';
 import { isTokenExpired, refreshAccessToken } from '../context/useAuth'; // Correct path
 
 const axiosInstance = axios.create({
-  baseURL: `${process.env.REACT_APP_URL}`, // Backend base URL
+  baseURL: `https://mypimagetogpt-mypimagetogpt.azuremicroservices.io`, // Backend base URL
 });
 
 axiosInstance.interceptors.response.use(

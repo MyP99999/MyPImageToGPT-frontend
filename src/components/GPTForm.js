@@ -47,7 +47,7 @@ const GPTForm = () => {
             console.log(model)
             try {
                 // Make a GET request
-                const response = await axiosInstance.post(`${process.env.REACT_APP_URL}bot/chat`, {
+                const response = await axiosInstance.post(`bot/chat`, {
                     prompt: combinedPrompt,
                     userId: user.id,
                     price: price,

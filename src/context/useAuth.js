@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'; // Correct import statement for jwt-decode
 import axiosInstance from '../api/axios';
+import axios from 'axios';
 
 export const isTokenExpired = (token) => {
   try {
@@ -16,7 +17,7 @@ export const isTokenExpired = (token) => {
 export async function refreshAccessToken(refreshToken) {
   try {
     const response = await axiosInstance.post(
-      'http://localhost:8080/api/auth/refresh-token?refreshToken=' + refreshToken
+      '/api/auth/refresh-token?refreshToken=' + refreshToken
     );
     const { token } = response.data;
     localStorage.setItem('accessToken', token);
@@ -95,7 +96,7 @@ export const AuthProvider = ({ children }) => {
   async function refreshAccessToken(refreshToken) {
     try {
       const response = await axiosInstance.post(
-        `${process.env.REACT_APP_URL}refresh-token?refreshToken=` + refreshToken
+        `/api/auth/refresh-token?refreshToken=` + refreshToken
       );
       const { token } = response.data;
       localStorage.setItem('accessToken', token);
