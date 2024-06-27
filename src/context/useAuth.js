@@ -95,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   async function refreshAccessToken(refreshToken) {
     try {
       const response = await axiosInstance.post(
-        'http://localhost:8080/api/auth/refresh-token?refreshToken=' + refreshToken
+        `${process.env.REACT_APP_URL}refresh-token?refreshToken=` + refreshToken
       );
       const { token } = response.data;
       localStorage.setItem('accessToken', token);

@@ -32,7 +32,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    window.location.href = `${process.env.REACT_APP_URL}oauth2/authorization/google`;
   };
 
   const formVariants = {
@@ -124,7 +124,7 @@ const LoginPage = () => {
           </div>
         </div>
       </motion.div>
-      <Sidebar />
+      {/* <Sidebar /> */}
       <motion.div className="absolute text-[50vh] bottom-[-120px] whitespace-nowrap text-[#ffffff09] w-1/2 font-bold pointer-events-none" variants={sliderVariants} initial="initial" animate="animate">
         MyP Image to GPT
       </motion.div>

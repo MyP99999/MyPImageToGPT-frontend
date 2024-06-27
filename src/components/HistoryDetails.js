@@ -32,11 +32,11 @@ const HistoryDetails = () => {
             <>
               <div className='self-start max-w-md lg:max-w-xl xl:max-w-4xl'>
                 <h1 className='text-white font-semibold'>Request: </h1>
-                <p className='bg-blue-200 p-3 rounded-xl break-words whitespace-pre-wrap'>{historyDetail.question}</p>
+                <p className='bg-blue-200 p-3 text-black rounded-xl break-words whitespace-pre-wrap'>{historyDetail.question}</p>
               </div>
               <div className='self-end max-w-md lg:max-w-xl xl:max-w-4xl'>
                 <h1 className='text-white font-semibold'>Response: </h1>
-                <p className='bg-blue-200 p-3 rounded-xl break-words whitespace-pre-wrap'>{historyDetail.answer}</p>
+                <p className='bg-blue-200 p-3 text-black rounded-xl break-words whitespace-pre-wrap'>{historyDetail.answer}</p>
               </div>
             </>
           )}

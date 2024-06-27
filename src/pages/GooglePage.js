@@ -17,7 +17,7 @@ const GooglePage = () => {
       if (code) {
         try {
           console.log(code)
-          const response = await axiosInstance.post(`/api/auth/google?code=${encodeURIComponent(code)}`);
+          const response = await axiosInstance.post(`${process.env.REACT_APP_URL}api/auth/google?code=${encodeURIComponent(code)}`);
           const data = response.data;
           console.log(response);
 

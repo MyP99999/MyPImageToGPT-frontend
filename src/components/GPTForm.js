@@ -47,7 +47,7 @@ const GPTForm = () => {
             console.log(model)
             try {
                 // Make a GET request
-                const response = await axiosInstance.post('http://localhost:8080/bot/chat', {
+                const response = await axiosInstance.post(`${process.env.REACT_APP_URL}bot/chat`, {
                     prompt: combinedPrompt,
                     userId: user.id,
                     price: price,
@@ -85,7 +85,7 @@ const GPTForm = () => {
                     userId: user.id,
                     price: 5,
                     model: 'gpt-4-vision-preview',
-                    imageData: "https://academiaabc.ro/wp-content/uploads/2021/06/Test-evaluare-matematica-clasa-a-II-a-1.jpg"
+                    imageData: selectedImage
                 });
                 const data = response.data.toString();
             
@@ -227,7 +227,7 @@ const GPTForm = () => {
                                     >
                                         Select Image
                                     </label>
-                                    <button className="text-xs ml-1 md:text-md text-center bg-blue-600 border-black border-2 hover:bg-blue-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer" onClick={complexOCR === true ? extractTextWithAI : convertImageToText}>
+                                    <button className="text-xs ml-1 md:text-md text-center bg-blue-600 border-black border-2 hover:bg-blue-700 text-white font-bold py-2 px-2 md:px-4 rounded cursor-pointer" onClick={convertImageToText}>
                                         Extract text
                                     </button>
                                 </div>
@@ -238,12 +238,12 @@ const GPTForm = () => {
                                     TransitionComponent={Fade}
                                     title="This is a more complex OCR, but the price for this is 5 tokens"
                                 >
-                                    <label htmlFor="ocr" className='text-white text-xl mr-2'>Complex OCR:</label>
+                                    {/* <label htmlFor="ocr" className='text-white text-xl mr-2'>Complex OCR:</label>
                                     <input
                                         type="checkbox"
                                         checked={complexOCR}
                                         onChange={(e) => setComplexOCR(e.target.checked)}
-                                    />
+                                    /> */}
                                 </BlackTooltip>
                             </div>
                         </div>

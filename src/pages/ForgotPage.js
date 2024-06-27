@@ -11,7 +11,7 @@ const ForgotPage = () => {
     event.preventDefault();
     console.log(email)
     try {
-      const response = await axiosInstance.post(`/api/auth/forgot-password?email=${email}`)
+      const response = await axiosInstance.post(`${process.env.REACT_APP_URL}api/auth/forgot-password?email=${email}`)
 
       console.log(response)
       if (response.status === 200 || response.status === 201) { // Check for successful response status

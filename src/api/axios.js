@@ -2,7 +2,7 @@ import axios from 'axios';
 import { isTokenExpired, refreshAccessToken } from '../context/useAuth'; // Correct path
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080', // Backend base URL
+  baseURL: `${process.env.REACT_APP_URL}`, // Backend base URL
 });
 
 axiosInstance.interceptors.response.use(

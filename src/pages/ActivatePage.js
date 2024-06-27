@@ -18,7 +18,7 @@ const ActivatePage = () => {
             try {
                 console.log(token)
                 // Call the activation API using Axios with async/await
-                const response = await axiosInstance.get(`http://localhost:8080/api/auth/activate?token=${token}`);
+                const response = await axiosInstance.get(`${process.env.REACT_APP_URL}api/auth/activate?token=${token}`);
                 console.log(response)
                 setMessage(response.data.message || 'Your account has been successfully activated.');
                 // Redirect after a delay

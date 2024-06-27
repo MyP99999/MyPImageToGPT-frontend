@@ -29,7 +29,7 @@ const CheckoutForm = () => {
         // }
 
         try {
-            const response = await axiosInstance.post('/create-payment-intent', {
+            const response = await axiosInstance.post('${process.env.REACT_APP_URL}create-payment-intent', {
                 amount: amount,
                 userId: user?.id
             });
