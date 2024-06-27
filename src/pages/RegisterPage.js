@@ -32,7 +32,7 @@ const RegisterPage = () => {
 
   
   const handleGoogleLogin = () => {
-    window.location.href = `oauth2/authorization/google`;
+    window.location.href = `https://mypimagetogpt-mypimagetogpt.azuremicroservices.io/oauth2/authorization/google`;
   };
 
   const formVariants = {
